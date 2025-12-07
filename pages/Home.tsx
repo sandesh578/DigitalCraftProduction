@@ -146,7 +146,7 @@ const Home: React.FC = () => {
               <div className="absolute -bottom-8 -right-8 w-72 h-72 bg-fuchsia-400 dark:bg-fuchsia-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-2xl opacity-30 animate-blob animation-delay-2000"></div>
               <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white dark:border-slate-800 transform rotate-1 hover:rotate-0 transition-transform duration-500 group">
                  <img 
-                    src="https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=800&h=800&fit=crop" 
+                    src="https://images.unsplash.com/photo-1585565804112-f201f68c48b4?q=80&w=800&auto=format&fit=crop" 
                     alt="Video Production" 
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                  />

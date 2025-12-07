@@ -9,7 +9,7 @@ const ChatWidget: React.FC = () => {
     {
       id: 'welcome',
       role: 'model',
-      text: "Namaste! 🙏 I'm HimAI, your digital assistant. How can I help you grow your business in Nepal today?",
+      text: "Namaste! 🙏 I'm the DCP Assistant. How can I help you grow your business in Nepal today?",
       timestamp: new Date(),
     }
   ]);
@@ -68,7 +68,7 @@ const ChatWidget: React.FC = () => {
                 <Bot className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-sm">Himalaya Support</h3>
+                <h3 className="font-semibold text-sm">DCP Support</h3>
                 <span className="text-xs text-indigo-200 flex items-center">
                   <span className="w-2 h-2 bg-green-400 rounded-full mr-1.5"></span>
                   Online Now

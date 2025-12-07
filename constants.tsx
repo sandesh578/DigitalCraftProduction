@@ -92,7 +92,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Founder',
     company: 'Kathmandu Gears',
     content: 'DCP transformed our brand image. Their video production quality is unmatched in Kathmandu. Highly recommended!',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop',
   },
   {
     id: '2',
@@ -100,7 +100,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Marketing Head',
     company: 'Urban Styles Nepal',
     content: 'The social media strategy was spot on. We saw a 50% increase in engagement within the first month of working with Digital Craft.',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&auto=format&fit=crop',
   },
   {
     id: '3',
@@ -108,7 +108,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Director',
     company: 'Himalayan Education',
     content: 'Professional, creative, and timely. Their web development team built us a robust platform that our students love.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=faces',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop',
   },
 ];
 
@@ -117,28 +117,32 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '1',
     title: 'Dashain Festival Campaign',
     category: 'Video Production',
-    image: 'https://images.unsplash.com/photo-1605218427368-35b80ce82b6b?w=800&h=600&fit=crop',
+    // Reliable "Celebration/Lights" image
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800&auto=format&fit=crop',
     description: 'A heartwarming video campaign that reached 500k+ views across platforms.',
   },
   {
     id: '2',
     title: 'TechHub Nepal Website',
     category: 'Web Development',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    // Reliable "Coding/Macbook" image
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
     description: 'Modern e-commerce platform with seamless payment integration.',
   },
   {
     id: '3',
     title: 'Organic Tea Branding',
     category: 'Branding',
-    image: 'https://images.unsplash.com/photo-1635352720367-17210e74136e?w=800&h=600&fit=crop',
+    // Reliable "Tea/Nature" image
+    image: 'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?q=80&w=800&auto=format&fit=crop',
     description: 'Complete visual identity and packaging design for a local tea brand.',
   },
   {
     id: '4',
     title: 'Fashion Week Reels',
     category: 'Social Media',
-    image: 'https://images.unsplash.com/photo-1533649693952-47535b42df3f?w=800&h=600&fit=crop',
+    // Reliable "Fashion/Model" image
+    image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800&auto=format&fit=crop',
     description: 'High-energy event coverage and reel editing for Nepal Fashion Week.',
   },
 ];

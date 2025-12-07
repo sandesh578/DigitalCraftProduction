@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
@@ -21,6 +22,17 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useTheme = () => useContext(ThemeContext);
 
+// Component to handle scrolling to top on route change
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     // Check local storage or system preference
@@ -30,6 +42,8 @@ const App: React.FC = () => {
     }
     return 'light';
   });
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -41,13 +55,31 @@ const App: React.FC = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <Router>
+        <ScrollToTop />
         <div className="flex flex-col min-h-screen transition-colors duration-300">
           <Navbar />
           <main className="flex-grow">
@@ -60,6 +92,17 @@ const App: React.FC = () => {
           </main>
           <Footer />
           <ChatWidget />
+          
+          {/* Back to Top Button */}
+          <button
+            onClick={scrollToTop}
+            className={`fixed bottom-24 right-6 z-40 p-3 rounded-full bg-slate-900 dark:bg-slate-700 text-white shadow-xl border border-slate-700 dark:border-slate-600 transition-all duration-300 hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:-translate-y-1 ${
+              showScrollTop ? 'opacity-100 scale-100' : 'opacity-0 scale-75 pointer-events-none'
+            }`}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </button>
         </div>
       </Router>
     </ThemeContext.Provider>

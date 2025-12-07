@@ -20,14 +20,29 @@ Key Information:
 If asked about prices, say: "Pricing depends on the scope of the project. Please reach out via WhatsApp at +977-9844659531 for a custom quote!"
 `;
 
+// Helper to safely get the API key from various environments (Vite, CRA, etc.)
+const getApiKey = (): string | undefined => {
+  // Check for Vite environment variable
+  if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_KEY) {
+    return (import.meta as any).env.VITE_API_KEY;
+  }
+  // Check for standard process.env (Webpack/Node)
+  if (typeof process !== 'undefined' && process.env?.API_KEY) {
+    return process.env.API_KEY;
+  }
+  return undefined;
+};
+
 export const initializeChat = (): void => {
-  if (!process.env.API_KEY) {
-    console.warn("Gemini API Key is missing.");
+  const apiKey = getApiKey();
+  
+  if (!apiKey) {
+    console.warn("Gemini API Key is missing. Chatbot features will be disabled.");
     return;
   }
   
   try {
-    genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    genAI = new GoogleGenAI({ apiKey });
     chatSession = genAI.chats.create({
       model: 'gemini-2.5-flash',
       config: {

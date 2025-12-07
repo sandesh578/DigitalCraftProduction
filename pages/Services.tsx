@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SERVICES } from '../constants';
 import { NavLink } from 'react-router-dom';
 import { Send, ChevronDown, X, Check } from 'lucide-react';
 
 const Services: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',

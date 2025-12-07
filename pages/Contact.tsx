@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
-    useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -13,9 +9,35 @@ const Contact: React.FC = () => {
     service: '',
     message: ''
   });
+  
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formState.name.trim()) newErrors.name = 'Full Name is required';
+    
+    if (!formState.email.trim()) {
+      newErrors.email = 'Email Address is required';
+    } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formState.phone.trim()) newErrors.phone = 'Phone Number is required';
+    
+    if (!formState.service) newErrors.service = 'Please select a service';
+    
+    if (!formState.message.trim()) newErrors.message = 'Message is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validate()) return;
     
     // Construct Mailto Link
     const subject = encodeURIComponent(`New Inquiry from ${formState.name}: ${formState.service || 'General'}`);
@@ -29,14 +51,27 @@ Message:
 ${formState.message}`
     );
 
+    // Trigger mailto
     window.location.href = `mailto:digitalcraftp@gmail.com?subject=${subject}&body=${body}`;
     
-    alert("Opening your email client to send the message...");
+    // Show success state
+    setIsSuccess(true);
     setFormState({ name: '', email: '', phone: '', service: '', message: '' });
+    setErrors({});
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormState({ ...formState, [name]: value });
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' });
+    }
+  };
+
+  const handleReset = () => {
+    setIsSuccess(false);
   };
 
   // FAQ Data
@@ -124,94 +159,120 @@ ${formState.message}`
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 relative animate-fade-in-up delay-200 transition-colors duration-300">
-             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
-                Send a Message <ArrowRight className="ml-2 h-5 w-5 text-indigo-500" />
-             </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formState.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                    placeholder="Ram Sharma"
-                  />
+          <div className="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 relative animate-fade-in-up delay-200 transition-colors duration-300 min-h-[600px] flex flex-col justify-center">
+            {isSuccess ? (
+              <div className="flex flex-col items-center justify-center text-center animate-fade-in-up">
+                <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6 ring-8 ring-green-50 dark:ring-green-900/20">
+                    <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
                 </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    required
-                    value={formState.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                    placeholder="98XXXXXXXX"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formState.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                  placeholder="ram@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="service" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Interested Service</label>
-                <select
-                  id="service"
-                  name="service"
-                  value={formState.service}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all dark:text-white"
+                <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Message Ready!</h3>
+                <p className="text-slate-600 dark:text-slate-400 max-w-sm mb-8">
+                    Your email client has been opened with your message. Please hit "Send" in your mail app to complete the process.
+                </p>
+                <button 
+                  onClick={handleReset}
+                  className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-indigo-500/30"
                 >
-                  <option value="">Select a service</option>
-                  <option value="video">Video Production</option>
-                  <option value="web">Web Development</option>
-                  <option value="social">Social Media Marketing</option>
-                  <option value="branding">Branding & Scriptwriting</option>
-                  <option value="seo">SEO & Analytics</option>
-                  <option value="other">Other Inquiry</option>
-                </select>
+                  Send Another Message
+                </button>
               </div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
+                    Send a Message <ArrowRight className="ml-2 h-5 w-5 text-indigo-500" />
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formState.name}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:text-white ${errors.name ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500 focus:border-indigo-500'}`}
+                        placeholder="Ram Sharma"
+                    />
+                    {errors.name && <p className="text-red-500 text-xs mt-1 flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.name}</p>}
+                    </div>
+                    <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formState.phone}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:text-white ${errors.phone ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500 focus:border-indigo-500'}`}
+                        placeholder="98XXXXXXXX"
+                    />
+                     {errors.phone && <p className="text-red-500 text-xs mt-1 flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.phone}</p>}
+                    </div>
+                </div>
 
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  required
-                  value={formState.message}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                  placeholder="Tell us about your project goals..."
-                ></textarea>
-              </div>
+                <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
+                    <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:text-white ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500 focus:border-indigo-500'}`}
+                    placeholder="ram@example.com"
+                    />
+                     {errors.email && <p className="text-red-500 text-xs mt-1 flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.email}</p>}
+                </div>
 
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center px-8 py-4 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-500/30 group hover:-translate-y-1"
-              >
-                Send Message <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
+                <div>
+                    <label htmlFor="service" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Interested Service</label>
+                    <div className="relative">
+                        <select
+                        id="service"
+                        name="service"
+                        value={formState.service}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border focus:ring-2 outline-none transition-all dark:text-white appearance-none ${errors.service ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500 focus:border-indigo-500'}`}
+                        >
+                        <option value="">Select a service</option>
+                        <option value="video">Video Production</option>
+                        <option value="web">Web Development</option>
+                        <option value="social">Social Media Marketing</option>
+                        <option value="branding">Branding & Scriptwriting</option>
+                        <option value="seo">SEO & Analytics</option>
+                        <option value="other">Other Inquiry</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </div>
+                     {errors.service && <p className="text-red-500 text-xs mt-1 flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.service}</p>}
+                </div>
+
+                <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
+                    <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={formState.message}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-800 border focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:text-white ${errors.message ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500 focus:border-indigo-500'}`}
+                    placeholder="Tell us about your project goals..."
+                    ></textarea>
+                     {errors.message && <p className="text-red-500 text-xs mt-1 flex items-center"><AlertCircle className="w-3 h-3 mr-1"/>{errors.message}</p>}
+                </div>
+
+                <button
+                    type="submit"
+                    className="w-full flex items-center justify-center px-8 py-4 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-500/30 group hover:-translate-y-1"
+                >
+                    Send Message <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
 
