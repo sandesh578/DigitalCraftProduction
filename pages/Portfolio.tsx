@@ -2,10 +2,16 @@ import React from 'react';
 import { PORTFOLIO } from '../constants';
 import { ArrowUpRight } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Portfolio: React.FC = () => {
   return (
     <div className="pt-24 pb-20 bg-white dark:bg-slate-900 min-h-screen transition-colors duration-300">
+      <SEO 
+        title="Our Portfolio" 
+        description="View our successful projects including Dashain campaigns, corporate websites, branding, and viral social media reels."
+        keywords="portfolio, case studies, video campaigns, website examples, branding work"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in-up">
           <span className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm">Our Work</span>

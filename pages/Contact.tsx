@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -84,6 +85,11 @@ ${formState.message}`
 
   return (
     <div className="pt-24 pb-20 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+      <SEO 
+        title="Contact Us" 
+        description="Get in touch with Digital Craft Productions. Visit our office in Sukhedhara, call us, or send an email to start your project."
+        keywords="contact dcp, digital marketing agency phone number, sukhedhara kathmandu, quote"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           

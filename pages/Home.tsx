@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Star, Video, Zap } from 'lucide-react';
 import { SERVICES, TESTIMONIALS } from '../constants';
+import SEO from '../components/SEO';
 
 const Home: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -17,6 +18,12 @@ const Home: React.FC = () => {
 
   return (
     <div className="overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+      <SEO 
+        title="Home" 
+        description="Digital Craft Productions (DCP) is Nepal's premier digital marketing agency. We specialize in video production, web development, SEO, and branding strategies."
+        keywords="digital marketing nepal, video production kathmandu, web development, branding agency, seo services nepal"
+      />
+      
       {/* Hero Section */}
       <section className="relative pt-40 pb-24 lg:pt-52 lg:pb-40 bg-[#020617] overflow-hidden">
         {/* Parallax Background Elements */}

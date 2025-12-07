@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SERVICES } from '../constants';
 import { NavLink } from 'react-router-dom';
 import { Send, ChevronDown, X, Check } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Services: React.FC = () => {
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
@@ -47,6 +48,11 @@ ${formData.message}`
 
   return (
     <div className="pt-24 pb-20 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+      <SEO 
+        title="Our Services" 
+        description="Explore DCP's services including Video Production, Web Development, SEO, Social Media Marketing, and 3D Animation."
+        keywords="video editing, web design, digital marketing services, social media ads, kathmandu agency"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in-up">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">Our Core Services</h1>
