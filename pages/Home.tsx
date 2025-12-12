@@ -1,11 +1,112 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Star, Video, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Video, Zap, ChevronLeft, ChevronRight, Quote, Globe, Sparkles, Target, Heart, Users } from 'lucide-react';
 import { SERVICES, TESTIMONIALS } from '../constants';
 import SEO from '../components/SEO';
 
+// Animated Counter Component
+const CountUp: React.FC<{ end: number; duration?: number; suffix?: string }> = ({ end, duration = 2000, suffix = '' }) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number | null = null;
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+      
+      setCount(Math.floor(end * percentage));
+
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [isVisible, end, duration]);
+
+  return <span ref={countRef}>{count}{suffix}</span>;
+};
+
+// Typewriter Component
+const TypewriterText: React.FC<{ words: string[] }> = ({ words }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Blinking cursor effect
+  useEffect(() => {
+    const timeout2 = setInterval(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearInterval(timeout2);
+  }, []);
+
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      // Finished typing word, wait then reverse
+      const timeout = setTimeout(() => {
+        setReverse(true);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (subIndex === 0 && reverse) {
+      // Finished deleting, move to next word
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, reverse ? 75 : 150); // Faster delete, slower type
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 drop-shadow-lg">
+      {words[index].substring(0, subIndex)}
+      <span className={`text-white ml-1 ${blink ? 'opacity-100' : 'opacity-0'}`}>|</span>
+    </span>
+  );
+};
+
 const Home: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  const typewriterWords = ["Masterpieces", "Growth", "Stories", "Experiences", "Brands"];
+  const marqueeItems = [
+    "VIDEO PRODUCTION", "WEB DEVELOPMENT", "SEO STRATEGY", "BRANDING", "SOCIAL MEDIA", "3D ANIMATION", 
+    "CAMPAIGN MANAGEMENT", "GRAPHIC DESIGN", "CONTENT WRITING", "INFLUENCER MARKETING"
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +116,38 @@ const Home: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Testimonial Carousel Logic
+  const nextTestimonial = () => {
+    setCurrentTestimonialIndex((prev) => (prev === TESTIMONIALS.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonialIndex((prev) => (prev === 0 ? TESTIMONIALS.length - 1 : prev - 1));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+    
+    if (distance > minSwipeDistance) {
+      nextTestimonial();
+    } else if (distance < -minSwipeDistance) {
+      prevTestimonial();
+    }
+    
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   return (
     <div className="overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
@@ -49,15 +182,13 @@ const Home: React.FC = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 text-sm font-semibold mb-8 backdrop-blur-md shadow-lg shadow-indigo-900/20 ring-1 ring-white/10">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 text-sm font-semibold mb-8 backdrop-blur-md shadow-lg shadow-indigo-900/20 ring-1 ring-white/10 hover:scale-105 transition-transform cursor-default">
             <span className="flex h-2.5 w-2.5 rounded-full bg-indigo-400 mr-2 animate-pulse shadow-[0_0_10px_rgba(129,140,248,0.8)]"></span>
             Full-Spectrum Digital Marketing in Nepal
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white mb-8 leading-[1.1] drop-shadow-sm">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white mb-8 leading-[1.1] drop-shadow-sm min-h-[3em] md:min-h-[2.5em]">
             We Craft Digital <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 drop-shadow-lg">
-              Masterpieces
-            </span>
+            <TypewriterText words={typewriterWords} />
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-xl md:text-2xl text-slate-300 mb-12 leading-relaxed animate-fade-in-up delay-100 font-light">
             Fast, Creative, and Culturally Sharp. From cinematic video production to viral campaigns, 
@@ -83,15 +214,21 @@ const Home: React.FC = () => {
           {/* Stats */}
           <div className="mt-24 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-12 animate-fade-in-up delay-300 bg-white/5 rounded-3xl backdrop-blur-sm p-8 mx-auto max-w-6xl">
             <div className="flex flex-col items-center group cursor-default">
-              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-300">10+</span>
+              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-300">
+                <CountUp end={10} suffix="+" />
+              </span>
               <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Happy Clients</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
-              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-purple-400 transition-colors duration-300">20+</span>
+              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-purple-400 transition-colors duration-300">
+                <CountUp end={20} suffix="+" />
+              </span>
               <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Projects Delivered</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
-              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">7</span>
+              <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">
+                 <CountUp end={7} />
+              </span>
               <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Days Open</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
@@ -101,6 +238,27 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Infinite Marquee Strip */}
+      <div className="py-8 bg-indigo-900/10 dark:bg-indigo-900/20 border-y border-indigo-100 dark:border-indigo-900/30 overflow-hidden relative">
+        <div className="flex animate-scroll w-[200%]">
+           {/* Duplicate list for seamless loop */}
+           <div className="flex space-x-12 min-w-full justify-around items-center px-6">
+              {marqueeItems.map((item, idx) => (
+                <span key={`1-${idx}`} className="text-lg md:text-xl font-bold text-indigo-900/40 dark:text-white/30 uppercase tracking-widest whitespace-nowrap flex items-center">
+                   {item} <span className="mx-6 text-indigo-500">•</span>
+                </span>
+              ))}
+           </div>
+           <div className="flex space-x-12 min-w-full justify-around items-center px-6">
+              {marqueeItems.map((item, idx) => (
+                <span key={`2-${idx}`} className="text-lg md:text-xl font-bold text-indigo-900/40 dark:text-white/30 uppercase tracking-widest whitespace-nowrap flex items-center">
+                   {item} <span className="mx-6 text-indigo-500">•</span>
+                </span>
+              ))}
+           </div>
+        </div>
+      </div>
 
       {/* Services Preview */}
       <section className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300 relative z-10">
@@ -214,7 +372,116 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials Preview */}
+      {/* Why Choose Us - The DCP Advantage */}
+      <section className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fade-in-up">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">The DCP Advantage</h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              We combine local insight with global standards to deliver results that matter.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1: Cultural Understanding */}
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-100">
+              <div className="w-14 h-14 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Globe className="h-7 w-7 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Deep Cultural Roots</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                We speak the language of Nepal—literally and culturally. From Dashain campaigns to local trends, we create content that feels authentic and resonates deeply with your audience.
+              </p>
+            </div>
+
+            {/* Card 2: Speed */}
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-200">
+              <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Speed & Agility</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                Trends move fast, and so do we. Our streamlined production workflow ensures high-quality delivery in record time, keeping your brand ahead of the curve.
+              </p>
+            </div>
+
+            {/* Card 3: Creative Expertise */}
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-300">
+              <div className="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Sparkles className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Creative Excellence</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                We don't use templates. Our team of filmmakers, designers, and strategists craft bespoke visual masterpieces that capture attention and drive action.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Digital Craft Productions */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
+            <div className="absolute top-[10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-indigo-100 dark:bg-indigo-900/10 blur-[80px]"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="animate-fade-in-up">
+                    <span className="text-indigo-600 dark:text-indigo-400 font-bold tracking-wide uppercase text-sm mb-3 block">Our Story</span>
+                    <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
+                        More Than Just An Agency
+                    </h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                        Founded in 2020 in the vibrant neighborhood of Sukhedhara, Kathmandu, Digital Craft Productions (DCP) started with a singular mission: to bridge the gap between traditional Nepali business values and the fast-paced world of digital marketing.
+                    </p>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                        We believe that every brand has a story waiting to be told. Our team of passionate creators, strategists, and tech enthusiasts work tirelessly to turn your vision into a digital reality that resonates with audiences locally and globally.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <NavLink to="/contact" className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-500/30">
+                            Get in Touch
+                        </NavLink>
+                         <NavLink to="/portfolio" className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                            See Our Journey
+                        </NavLink>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 animate-fade-in-up delay-100">
+                    <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
+                        <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl text-red-600 dark:text-red-400">
+                            <Target className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Our Mission</h3>
+                            <p className="text-slate-600 dark:text-slate-400">To empower 1,000+ Nepali businesses by 2030 with innovative digital solutions that drive measurable growth.</p>
+                        </div>
+                    </div>
+                     <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
+                        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl text-indigo-600 dark:text-indigo-400">
+                            <Heart className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Our Values</h3>
+                            <p className="text-slate-600 dark:text-slate-400">We prioritize transparency, creativity, and results. We treat your business like our own.</p>
+                        </div>
+                    </div>
+                     <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
+                        <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400">
+                            <Users className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">The Team</h3>
+                            <p className="text-slate-600 dark:text-slate-400">A diverse collective of filmmakers, coders, and marketers united by a passion for excellence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      {/* Testimonials Carousel */}
       <section className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -224,26 +491,81 @@ const Home: React.FC = () => {
             </div>
             <p className="text-slate-500 dark:text-slate-400 font-medium">Based on 10+ successful partnerships.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t, index) => (
-              <div key={t.id} className="bg-slate-50 dark:bg-slate-800 p-10 rounded-[2rem] relative hover:shadow-2xl hover:shadow-slate-200 dark:hover:shadow-slate-900 transition-all duration-300 animate-fade-in-up border border-slate-100 dark:border-slate-700 hover:border-indigo-100 dark:hover:border-indigo-500/30" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="absolute top-10 right-10 text-indigo-100 dark:text-indigo-900/50 opacity-50">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z" />
-                    </svg>
-                </div>
-                <div className="flex items-center space-x-4 mb-8 relative z-10">
-                  <div className="p-1 rounded-full bg-white dark:bg-slate-700 shadow-sm">
-                     <img src={t.image} alt={t.name} className="w-16 h-16 rounded-full object-cover" />
+          
+          <div className="relative max-w-4xl mx-auto">
+            {/* Navigation Buttons - Hidden on mobile, visible on tablet+ */}
+            <button 
+              onClick={prevTestimonial}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-20 p-3 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 shadow-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hidden md:flex"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button 
+              onClick={nextTestimonial}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-20 p-3 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 shadow-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hidden md:flex"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+
+            {/* Carousel Viewport */}
+            <div 
+              className="overflow-hidden rounded-[2.5rem] bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-2xl shadow-indigo-100/50 dark:shadow-none"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div 
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${currentTestimonialIndex * 100}%)` }}
+              >
+                {TESTIMONIALS.map((t) => (
+                  <div key={t.id} className="min-w-full p-8 md:p-16 flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                     <div className="relative shrink-0">
+                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-purple-500">
+                             <img src={t.image} alt={t.name} className="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-800" />
+                         </div>
+                         <div className="absolute -bottom-2 -right-2 bg-indigo-600 text-white p-2 rounded-full shadow-lg">
+                             <Quote className="h-4 w-4 fill-current" />
+                         </div>
+                     </div>
+                     <div className="flex-1 text-center md:text-left">
+                         <div className="mb-6">
+                            <Star className="inline-block h-5 w-5 text-amber-400 fill-current" />
+                            <Star className="inline-block h-5 w-5 text-amber-400 fill-current" />
+                            <Star className="inline-block h-5 w-5 text-amber-400 fill-current" />
+                            <Star className="inline-block h-5 w-5 text-amber-400 fill-current" />
+                            <Star className="inline-block h-5 w-5 text-amber-400 fill-current" />
+                         </div>
+                         <p className="text-xl md:text-2xl font-light italic text-slate-700 dark:text-slate-300 leading-relaxed mb-8">
+                             "{t.content}"
+                         </p>
+                         <div>
+                             <h4 className="text-xl font-bold text-slate-900 dark:text-white">{t.name}</h4>
+                             <p className="text-indigo-600 dark:text-indigo-400 font-semibold">{t.role}, {t.company}</p>
+                         </div>
+                     </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white text-lg">{t.name}</h4>
-                    <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">{t.company}</p>
-                  </div>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 italic leading-relaxed relative z-10 text-lg">"{t.content}"</p>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center mt-8 space-x-3">
+              {TESTIMONIALS.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonialIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentTestimonialIndex 
+                      ? 'bg-indigo-600 w-8' 
+                      : 'bg-slate-300 dark:bg-slate-700 hover:bg-indigo-400'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

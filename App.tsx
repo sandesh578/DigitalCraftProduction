@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import Navbar from './components/Navbar';
@@ -31,6 +31,41 @@ const ScrollToTop: React.FC = () => {
   }, [pathname]);
 
   return null;
+};
+
+// Custom Cursor Component
+const CustomCursor: React.FC = () => {
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorOutlineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+
+      if (cursorDotRef.current) {
+        cursorDotRef.current.style.left = `${posX}px`;
+        cursorDotRef.current.style.top = `${posY}px`;
+      }
+
+      if (cursorOutlineRef.current) {
+        cursorOutlineRef.current.animate({
+          left: `${posX}px`,
+          top: `${posY}px`
+        }, { duration: 500, fill: 'forwards' });
+      }
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, []);
+
+  return (
+    <>
+      <div ref={cursorDotRef} className="cursor-dot bg-indigo-500 dark:bg-indigo-400"></div>
+      <div ref={cursorOutlineRef} className="cursor-outline border-indigo-500 dark:border-indigo-400"></div>
+    </>
+  );
 };
 
 const App: React.FC = () => {
@@ -80,6 +115,7 @@ const App: React.FC = () => {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <Router>
         <ScrollToTop />
+        <CustomCursor />
         <div className="flex flex-col min-h-screen transition-colors duration-300">
           <Navbar />
           <main className="flex-grow">

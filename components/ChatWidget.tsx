@@ -60,9 +60,9 @@ const ChatWidget: React.FC = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[350px] sm:w-[400px] h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800 animate-float transition-all duration-300 origin-bottom-right">
+        <div className="mb-4 w-[calc(100vw-3rem)] sm:w-[400px] h-[60vh] sm:h-[500px] max-h-[calc(100dvh-120px)] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800 animate-float transition-all duration-300 origin-bottom-right">
           {/* Header */}
-          <div className="bg-indigo-600 p-4 flex justify-between items-center text-white">
+          <div className="bg-indigo-600 p-4 flex justify-between items-center text-white shrink-0">
             <div className="flex items-center space-x-2">
               <div className="p-1.5 bg-white/20 rounded-full">
                 <Bot className="h-5 w-5 text-white" />
@@ -114,7 +114,7 @@ const ChatWidget: React.FC = () => {
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSend} className="p-4 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+          <form onSubmit={handleSend} className="p-4 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shrink-0">
             <div className="flex items-center space-x-2">
               <input
                 type="text"

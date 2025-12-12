@@ -45,10 +45,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 border-b ${
+      className={`fixed w-full z-50 transition-all duration-500 ease-in-out border-b ${
         scrolled 
-          ? 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-md shadow-lg border-slate-200/50 dark:border-slate-800/50 py-3' 
-          : 'bg-transparent border-transparent py-5'
+          ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shadow-lg border-slate-200/50 dark:border-slate-800/50 py-3 translate-y-0 opacity-100' 
+          : 'bg-transparent border-transparent py-5 translate-y-0'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl border-t border-slate-100 dark:border-slate-800 animate-fade-in-up">
+        <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl border-t border-slate-100 dark:border-slate-800 animate-slide-down">
           <div className="px-4 pt-4 pb-8 space-y-2">
             <NavLink to="/" className={mobileNavClasses}>Home</NavLink>
             <NavLink to="/services" className={mobileNavClasses}>Services</NavLink>

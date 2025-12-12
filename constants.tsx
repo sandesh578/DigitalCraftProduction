@@ -79,7 +79,7 @@ export const SERVICES: Service[] = [
   {
     id: '10',
     title: '3D Animation & Modeling',
-    description: 'Immersive 3D visuals, product modeling, and character animation that bring your ideas to life in three dimensions.',
+    description: 'High-fidelity 3D modeling, product visualization, and character animation to bring your most ambitious ideas to life.',
     icon: Box,
     color: 'bg-emerald-500',
   },

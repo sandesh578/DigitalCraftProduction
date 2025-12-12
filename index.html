@@ -14,6 +14,38 @@
               slate: {
                 950: '#020617',
               }
+            },
+            animation: {
+              'scroll': 'scroll 20s linear infinite',
+              'blob': 'blob 7s infinite',
+              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+              'float': 'float 3s ease-in-out infinite',
+              'slide-down': 'slideDown 0.5s ease-out forwards',
+            },
+            keyframes: {
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              },
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              float: {
+                '0%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+                '100%': { transform: 'translateY(0px)' },
+              },
+              fadeInUp: {
+                'from': { opacity: '0', transform: 'translateY(20px)' },
+                'to': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideDown: {
+                'from': { transform: 'translateY(-100%)', opacity: '0' },
+                'to': { transform: 'translateY(0)', opacity: '1' },
+              }
             }
           }
         }
@@ -23,7 +55,19 @@
     <style>
       body {
         font-family: 'Outfit', sans-serif;
+        cursor: none; /* Hide default cursor */
       }
+      
+      /* Restore cursor for touch devices */
+      @media (hover: none) and (pointer: coarse) {
+        body {
+          cursor: auto;
+        }
+        .cursor-dot, .cursor-outline {
+          display: none;
+        }
+      }
+
       .scrollbar-hide::-webkit-scrollbar {
           display: none;
       }
@@ -31,55 +75,48 @@
           -ms-overflow-style: none;
           scrollbar-width: none;
       }
-      /* Custom Animation Utilities */
-      @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
+      
+      /* Custom Cursor Styles */
+      .cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #6366f1; /* Indigo-500 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: 9999;
+        pointer-events: none;
       }
-      .animate-float {
-        animation: float 3s ease-in-out infinite;
+
+      .cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(99, 102, 241, 0.5); /* Indigo-500 opacity 0.5 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: 9998;
+        pointer-events: none;
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
       }
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+
+      body:hover .cursor-outline {
+        opacity: 1;
       }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
+      
+      /* Hover State for Links/Buttons (handled via JS classes ideally, but basic hover here) */
+      a:hover ~ .cursor-outline, button:hover ~ .cursor-outline {
+        transform: translate(-50%, -50%) scale(1.5);
       }
+
       .delay-100 { animation-delay: 0.1s; }
       .delay-200 { animation-delay: 0.2s; }
       .delay-300 { animation-delay: 0.3s; }
       
-      .hover-underline-animation {
-        display: inline-block;
-        position: relative;
-      }
-      .hover-underline-animation:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        transform: scaleX(0);
-        height: 2px;
-        bottom: 0;
-        left: 0;
-        background-color: #6366f1; /* Indigo-500 */
-        transform-origin: bottom right;
-        transition: transform 0.25s ease-out;
-      }
-      .hover-underline-animation:hover:after {
-        transform: scaleX(1);
-        transform-origin: bottom left;
-      }
-      @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
-      }
-      .animate-blob {
-        animation: blob 7s infinite;
-      }
       .animation-delay-2000 {
         animation-delay: 2s;
       }
