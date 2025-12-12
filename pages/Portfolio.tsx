@@ -9,26 +9,75 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Maximize2,
-  ExternalLink
+  ExternalLink,
+  Loader2,
+  AlertTriangle
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { getDriveDirectLink } from '../utils/driveHelper';
 import VideoPlayer from '../components/VideoPlayer';
+import { useContent } from '../context/ContentContext';
+import { fetchDriveFiles } from '../services/driveService';
 
 const Portfolio: React.FC = () => {
+  const { config } = useContent();
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'video' | 'image'>('all');
+  
+  // Loading & Error States for Dynamic Fetching
+  const [isLoadingDrive, setIsLoadingDrive] = useState(false);
+  const [driveError, setDriveError] = useState<string | null>(null);
   
   // Lightbox State
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Load data immediately
+  // Load data logic
   useEffect(() => {
-    setItems(PORTFOLIO);
-  }, []);
+    const loadContent = async () => {
+        // If Drive API is enabled and configured, try to fetch
+        if (config.drive?.enabled && config.drive.apiKey && config.drive.folderId) {
+            setIsLoadingDrive(true);
+            setDriveError(null);
+            try {
+                const driveItems = await fetchDriveFiles(config.drive.folderId, config.drive.apiKey);
+                if (driveItems.length > 0) {
+                    setItems(driveItems);
+                } else {
+                    // Fallback if folder empty
+                    setItems(PORTFOLIO);
+                    setDriveError("No public files found in the linked folder.");
+                }
+            } catch (err) {
+                console.error(err);
+                setItems(PORTFOLIO); // Fallback to hardcoded
+                setDriveError("Failed to sync with Drive. Using cached portfolio. Check API Key/Permissions.");
+            } finally {
+                setIsLoadingDrive(false);
+            }
+        } else {
+            // Default behavior
+            setItems(PORTFOLIO);
+        }
+    };
+
+    loadContent();
+  }, [config.drive]);
 
   const filteredItems = items.filter(item => filter === 'all' || item.type === filter);
+
+  // Robust Image Fallback Handler
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, title: string) => {
+    const target = e.currentTarget;
+    // Prevent infinite loop if the avatar API fails
+    if (target.src.includes('ui-avatars.com')) {
+       target.src = '/jpeg/logo.jpeg'; // Final local fallback
+       target.onerror = null; // Prevent further error handling
+    } else {
+       // First fallback: Generated Avatar
+       target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=random&size=400&font-size=0.33`;
+    }
+  };
 
   // Lightbox Logic
   const openLightbox = (index: number) => {
@@ -87,7 +136,7 @@ const Portfolio: React.FC = () => {
           
           <div className="flex justify-center space-x-4">
              <a 
-               href="https://drive.google.com/drive/folders/1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK?usp=sharing"
+               href={`https://drive.google.com/drive/folders/${config.drive?.folderId || '1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK'}`}
                target="_blank"
                rel="noopener noreferrer"
                className="inline-flex items-center px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm"
@@ -95,6 +144,18 @@ const Portfolio: React.FC = () => {
                <FolderOpen className="mr-2 h-4 w-4" /> View Full Drive Folder
              </a>
           </div>
+
+          {/* Drive Status Messages */}
+          {isLoadingDrive && (
+              <div className="mt-6 flex items-center justify-center text-indigo-500 animate-pulse">
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Syncing with Google Drive...
+              </div>
+          )}
+          {driveError && (
+              <div className="mt-4 inline-flex items-center px-4 py-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg text-sm border border-amber-200 dark:border-amber-800">
+                  <AlertTriangle className="w-4 h-4 mr-2" /> {driveError}
+              </div>
+          )}
         </div>
       </div>
 
@@ -137,7 +198,7 @@ const Portfolio: React.FC = () => {
                   <div 
                       key={item.id} 
                       className="break-inside-avoid group cursor-pointer animate-fade-in-up"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      style={{ animationDelay: `${(index % 10) * 50}ms` }}
                       onClick={() => openLightbox(index)}
                   >
                   <div className="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md group-hover:shadow-xl transition-all duration-300">
@@ -161,9 +222,7 @@ const Portfolio: React.FC = () => {
                               src={getDriveDirectLink(item.image)} 
                               alt={item.title} 
                               className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                              onError={(e) => {
-                                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.title)}&background=random&size=400&font-size=0.33`;
-                              }}
+                              onError={(e) => handleImageError(e, item.title)}
                           />
                           {/* Hover Overlay */}
                           <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -241,9 +300,7 @@ const Portfolio: React.FC = () => {
                                   src={getDriveDirectLink(items[lightboxIndex].image)} 
                                   alt={items[lightboxIndex].title}
                                   className="max-h-[80vh] max-w-full object-contain"
-                                  onError={(e) => {
-                                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(items[lightboxIndex].title)}&background=random&size=400&font-size=0.33`;
-                                  }}
+                                  onError={(e) => handleImageError(e, items[lightboxIndex].title)}
                               />
                               {/* Overlay for Missing Video */}
                               {items[lightboxIndex].type === 'video' && (
@@ -253,7 +310,7 @@ const Portfolio: React.FC = () => {
                                     <h4 className="text-white font-bold text-lg mb-2">Video Preview</h4>
                                     <p className="text-white/70 text-sm mb-4">The full video is available in our Drive folder.</p>
                                     <a 
-                                      href="https://drive.google.com/drive/folders/1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK?usp=sharing" 
+                                      href={`https://drive.google.com/drive/folders/${config.drive?.folderId || '1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK'}`} 
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold transition-colors"

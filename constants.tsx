@@ -5,7 +5,7 @@ import {
   Megaphone, 
   BarChart, 
   Mic,
-  Smartphone,
+  Smartphone, 
   Palette,
   Target,
   Box
@@ -18,7 +18,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
   agency: {
     name: "Digital Craft Productions",
     tagline: "Full-Spectrum Digital Marketing in Nepal",
-    logo: "/images/logo.svg", 
+    logo: "/jpeg/logo.jpeg", 
   },
   hero: {
     titlePrefix: "We Craft Digital",
@@ -35,6 +35,11 @@ export const DEFAULT_CONFIG: SiteConfig = {
     phone: "+977 9844659531",
     email: "digitalcraftp@gmail.com",
     address: "Sukhedhara, Kathmandu"
+  },
+  drive: {
+    enabled: false, // Set to true once API key is added in Config Modal
+    apiKey: "",     // User must provide this via Config Modal
+    folderId: "1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK" // Extracted from user's link
   }
 };
 
@@ -178,7 +183,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Operations Team',
     company: 'Basanta Adventure Treks',
     content: 'DCP handled our trekking logistics content and digital presence flawlessly. Their understanding of the tourism industry in Nepal is exceptional.',
-    image: '/images/basanta.svg',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
   },
   {
     id: '2',
@@ -186,7 +191,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Management',
     company: 'Life Care Health Home',
     content: 'Our social media engagement skyrocketed after DCP took over. They create content that genuinely connects with patients and families.',
-    image: '/images/lifecare.svg',
+    image: 'https://images.unsplash.com/photo-1559839734-2b71ea86b3f9?w=200&h=200&fit=crop',
   },
   {
     id: '3',
@@ -194,7 +199,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Administrator',
     company: 'Kathmandu Valley Education Center',
     content: 'From student recruitment ads to educational reels, Digital Craft Productions has been a vital partner in our growth.',
-    image: '/images/kvec.svg',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop',
   },
   {
     id: '4',
@@ -202,36 +207,27 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Owner',
     company: 'Bajthala Traditional Homes',
     content: 'They captured the essence of Nepali hospitality perfectly. Our bookings increased significantly thanks to their visual storytelling.',
-    image: '/images/bajthala.svg', 
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop', 
   },
 ];
 
 // --- PORTFOLIO CONFIGURATION ---
-// YOUR GOOGLE DRIVE FOLDER: https://drive.google.com/drive/folders/1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK
-//
-// INSTRUCTIONS:
-// 1. Open your Drive folder link above.
-// 2. Right-click a specific video file -> "Get Link" -> "Copy Link"
-// 3. Paste that link into the 'videoUrl' field below for the corresponding item.
-//    Example: videoUrl: 'https://drive.google.com/file/d/1aBcDeFgHiJkLmNoPqRsTuVwXyZ/view?usp=sharing'
-//
-// NOTE: If you leave videoUrl empty (''), the site will display the image instead of a broken player.
-
+// These are fallbacks. If API Key is provided, these will be overwritten/augmented.
 export const PORTFOLIO: PortfolioItem[] = [
   {
     id: '1',
     title: 'Basanta Adventure Treks',
     category: 'Trek Coordination & Social',
-    image: '/images/basanta.svg',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
     description: 'Logistics coordination and digital storytelling for international trekking expeditions.',
     type: 'video', 
-    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
+    videoUrl: '', 
   },
   {
     id: '2',
     title: 'Epicenter Education',
     category: 'Web Dev & Marketing',
-    image: '/images/epicenter.svg',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
     description: 'Full website development, SEO, and student recruitment campaigns.',
     type: 'image',
   },
@@ -239,7 +235,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '3',
     title: 'Life Care Health Home',
     category: 'Content Creation',
-    image: '/images/lifecare.svg',
+    image: 'https://images.unsplash.com/photo-1516574187841-693083f69802?q=80&w=800&auto=format&fit=crop',
     description: 'Healthcare awareness campaigns and patient support content strategy.',
     type: 'image',
   },
@@ -247,7 +243,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '4',
     title: 'The Perch, Naxal',
     category: 'Social Media Growth',
-    image: '/images/perch.svg',
+    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop',
     description: 'Creative visuals and event promotion increasing footfall and engagement.',
     type: 'image',
   },
@@ -255,7 +251,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '5',
     title: 'Kathmandu Valley Education',
     category: 'Ads & Branding',
-    image: '/images/kvec.svg',
+    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop',
     description: 'Targeted ad campaigns and monthly content strategy for student enrollment.',
     type: 'image',
   },
@@ -263,25 +259,25 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '6',
     title: 'Bajthala Traditional Homes',
     category: 'Hospitality Branding',
-    image: '/images/bajthala.svg', 
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop', 
     description: 'Showcasing Nepali culture and lifestyle to attract domestic and international guests.',
     type: 'video',
-    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
+    videoUrl: '', 
   },
   {
     id: '7',
     title: 'Best Loksewa Support',
     category: 'Video Production & SEO',
-    image: '/images/loksewa.svg',
+    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
     description: 'YouTube management, thumbnail design, and SEO for Loksewa preparation content.',
     type: 'video',
-    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
+    videoUrl: '', 
   },
   {
     id: '8',
     title: 'Karobar Restaurant',
     category: 'Social Media & Menu',
-    image: '/images/karobar.svg',
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop',
     description: 'Appetizing food photography and social media management.',
     type: 'image',
   },
@@ -289,7 +285,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '9',
     title: 'Plan Himalaya',
     category: 'Brand Identity',
-    image: '/images/planhimalaya.svg',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
     description: 'Visual identity and digital content for adventure tourism.',
     type: 'image',
   },
@@ -297,7 +293,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '10',
     title: 'Natural Glow Beauty',
     category: 'Beauty Branding',
-    image: '/images/naturalglow.svg',
+    image: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=800&auto=format&fit=crop',
     description: 'Elegant visual identity and social media presence for beauty services.',
     type: 'image',
   }

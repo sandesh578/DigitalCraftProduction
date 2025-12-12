@@ -5,6 +5,7 @@ import { SiteConfig } from '../types';
 interface ContentContextType {
   config: SiteConfig;
   updateAgency: (data: Partial<SiteConfig['agency']>) => void;
+  updateDriveConfig: (data: Partial<SiteConfig['drive']>) => void;
   isLoading: boolean;
   error: string | null;
 }
@@ -12,6 +13,7 @@ interface ContentContextType {
 const ContentContext = createContext<ContentContextType>({
   config: DEFAULT_CONFIG,
   updateAgency: () => {},
+  updateDriveConfig: () => {},
   isLoading: false,
   error: null,
 });
@@ -45,9 +47,15 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }));
   };
 
+  const updateDriveConfig = (data: Partial<SiteConfig['drive']>) => {
+    setConfig(prev => ({
+        ...prev,
+        drive: { ...prev.drive, ...data }
+    }));
+  };
+
   useEffect(() => {
-    // Optional: Keep the external fetch logic if you plan to use a JSON file later,
-    // but ensure it doesn't overwrite user's local changes unexpectedly.
+    // Optional: External fetch logic could go here
     const fetchContent = async () => {
       const contentUrl = (import.meta as any).env?.VITE_CONTENT_URL;
       if (!contentUrl) return;
@@ -57,11 +65,6 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const response = await fetch(contentUrl);
         if (!response.ok) throw new Error('Failed to fetch content');
         const data = await response.json();
-        
-        // Only merge if we haven't modified locally (simplistic check)
-        // or just use this to hydrate defaults. 
-        // For now, we prioritize the localStorage state initialized above.
-        // If you want remote to override, you'd logic here.
       } catch (err) {
         console.error("Content fetch failed:", err);
         setError("Failed to load dynamic content.");
@@ -74,7 +77,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   return (
-    <ContentContext.Provider value={{ config, updateAgency, isLoading, error }}>
+    <ContentContext.Provider value={{ config, updateAgency, updateDriveConfig, isLoading, error }}>
       {children}
     </ContentContext.Provider>
   );

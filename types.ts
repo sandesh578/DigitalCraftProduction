@@ -57,4 +57,10 @@ export interface SiteConfig {
     email: string;
     address: string;
   };
+  // New Drive API Config
+  drive: {
+    enabled: boolean;
+    apiKey: string;
+    folderId: string;
+  };
 }
