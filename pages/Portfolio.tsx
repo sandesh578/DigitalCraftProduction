@@ -8,11 +8,13 @@ import {
   X, 
   ChevronLeft, 
   ChevronRight, 
-  Maximize2 
+  Maximize2,
+  ExternalLink
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import SEO from '../components/SEO';
-import { getDriveDirectLink, getVideoEmbedUrl } from '../utils/driveHelper';
+import { getDriveDirectLink } from '../utils/driveHelper';
+import VideoPlayer from '../components/VideoPlayer';
 
 const Portfolio: React.FC = () => {
   const [items, setItems] = useState<PortfolioItem[]>([]);
@@ -90,7 +92,7 @@ const Portfolio: React.FC = () => {
                rel="noopener noreferrer"
                className="inline-flex items-center px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm"
              >
-               <FolderOpen className="mr-2 h-4 w-4" /> View Raw Drive Files
+               <FolderOpen className="mr-2 h-4 w-4" /> View Full Drive Folder
              </a>
           </div>
         </div>
@@ -166,7 +168,7 @@ const Portfolio: React.FC = () => {
                           {/* Hover Overlay */}
                           <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                               <div className="bg-white/20 backdrop-blur-md p-3 rounded-full border border-white/30 text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                  <Maximize2 className="w-6 h-6" />
+                                  {item.type === 'video' && item.videoUrl ? <PlayCircle className="w-6 h-6" /> : <Maximize2 className="w-6 h-6" />}
                               </div>
                           </div>
                       </div>
@@ -220,24 +222,48 @@ const Portfolio: React.FC = () => {
                  <div className="relative max-w-5xl w-full max-h-[80vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
                     
                     {/* Media Display */}
-                    <div className="w-full h-full bg-black rounded-lg overflow-hidden shadow-2xl ring-1 ring-white/20 relative flex items-center justify-center aspect-video">
-                        {items[lightboxIndex].type === 'video' && items[lightboxIndex].videoUrl ? (
-                             <iframe 
-                                width="100%" 
-                                height="100%" 
-                                src={getVideoEmbedUrl(items[lightboxIndex].videoUrl)} 
+                    <div className="w-full h-full bg-black rounded-lg overflow-hidden shadow-2xl ring-1 ring-white/20 relative flex items-center justify-center aspect-video group">
+                        
+                        {/* 
+                          CHECK: Does this item have a valid video URL? 
+                          If YES -> Show Video Player.
+                          If NO -> Show Image + "View in Drive" fallback (Prevents black screen)
+                        */}
+                        {items[lightboxIndex].type === 'video' && items[lightboxIndex].videoUrl && items[lightboxIndex].videoUrl.trim() !== '' ? (
+                             <VideoPlayer 
+                                url={items[lightboxIndex].videoUrl} 
                                 title={items[lightboxIndex].title}
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                className="w-full h-full"
-                             ></iframe>
+                                poster={getDriveDirectLink(items[lightboxIndex].image)}
+                             />
                         ) : (
-                            <img 
-                                src={getDriveDirectLink(items[lightboxIndex].image)} 
-                                alt={items[lightboxIndex].title}
-                                className="max-h-[80vh] max-w-full object-contain"
-                            />
+                            <>
+                              <img 
+                                  src={getDriveDirectLink(items[lightboxIndex].image)} 
+                                  alt={items[lightboxIndex].title}
+                                  className="max-h-[80vh] max-w-full object-contain"
+                                  onError={(e) => {
+                                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(items[lightboxIndex].title)}&background=random&size=400&font-size=0.33`;
+                                  }}
+                              />
+                              {/* Overlay for Missing Video */}
+                              {items[lightboxIndex].type === 'video' && (
+                                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center backdrop-blur-sm">
+                                  <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/20 text-center">
+                                    <PlayCircle className="w-12 h-12 text-white/80 mx-auto mb-3" />
+                                    <h4 className="text-white font-bold text-lg mb-2">Video Preview</h4>
+                                    <p className="text-white/70 text-sm mb-4">The full video is available in our Drive folder.</p>
+                                    <a 
+                                      href="https://drive.google.com/drive/folders/1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK?usp=sharing" 
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold transition-colors"
+                                    >
+                                      Open Folder <ExternalLink className="w-4 h-4 ml-2" />
+                                    </a>
+                                  </div>
+                                </div>
+                              )}
+                            </>
                         )}
                     </div>
 

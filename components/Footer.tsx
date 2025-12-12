@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Layers, Mail, MapPin, Phone, Settings } from 'lucide-react';
 import ConfigModal from './ConfigModal';
 import { useContent } from '../context/ContentContext';
+import { getDriveDirectLink } from '../utils/driveHelper';
 
 const Footer: React.FC = () => {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
@@ -27,6 +28,8 @@ const Footer: React.FC = () => {
     subText = "AGENCY";
   }
 
+  const logoUrl = getDriveDirectLink(config.agency.logo);
+
   return (
     <footer className="bg-slate-950 text-slate-300 pt-20 pb-10 border-t border-slate-900 relative overflow-hidden">
        {/* Background Glow */}
@@ -40,10 +43,14 @@ const Footer: React.FC = () => {
           
           {/* Brand Info */}
           <div className="space-y-6 animate-fade-in-up">
-             <NavLink to="/" className="flex items-center space-x-2.5 group w-fit">
-                <div className="relative p-2 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-lg shadow-lg shadow-indigo-900/50">
-                    <Layers className="h-5 w-5 text-white" />
-                </div>
+             <NavLink to="/" className="flex items-center space-x-3 group w-fit">
+                {logoUrl ? (
+                   <img src={logoUrl} alt={agencyName} className="h-10 w-10 object-contain drop-shadow-[0_0_10px_rgba(251,113,133,0.5)]" />
+                ) : (
+                  <div className="relative p-2 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-lg shadow-lg shadow-indigo-900/50">
+                      <Layers className="h-5 w-5 text-white" />
+                  </div>
+                )}
                 <div className="flex flex-col">
                 <span className="text-xl font-bold text-white leading-none">
                     {mainTextFirst}<span className="text-indigo-400">{mainTextSecond}</span>

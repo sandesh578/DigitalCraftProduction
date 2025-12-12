@@ -1,0 +1,42 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="phoenixGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#be123c" />
+      <stop offset="50%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#fb7185" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main Body / Flames -->
+  <path d="M256 120 C 230 100, 150 80, 100 150 C 80 180, 100 240, 140 280 C 120 320, 140 380, 256 440 C 372 380, 392 320, 372 280 C 412 240, 432 180, 412 150 C 362 80, 282 100, 256 120 Z" fill="url(#phoenixGrad)" filter="url(#glow)" opacity="0.9"/>
+  
+  <!-- Inner Detail / Eye -->
+  <path d="M256 160 Q 230 200 256 300 Q 282 200 256 160" fill="#fff" opacity="0.4"/>
+  <circle cx="256" cy="110" r="5" fill="#fff" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Sparkles -->
+  <circle cx="100" cy="100" r="3" fill="#fb7185" opacity="0.8">
+     <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite" />
+     <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="412" cy="100" r="3" fill="#fb7185" opacity="0.8">
+     <animate attributeName="r" values="2;4;2" dur="2.5s" repeatCount="indefinite" />
+     <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="256" cy="50" r="4" fill="#fff" opacity="0.6">
+     <animate attributeName="cy" values="50;40;50" dur="4s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Wing Accents -->
+  <path d="M100 150 Q 50 100 80 50" stroke="url(#phoenixGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <path d="M412 150 Q 462 100 432 50" stroke="url(#phoenixGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+</svg>

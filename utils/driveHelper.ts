@@ -1,10 +1,6 @@
 /**
  * Converts a Google Drive share link into a direct download/view link 
  * that can be used in <img> tags.
- * 
- * Supports:
- * - https://drive.google.com/file/d/ID/view...
- * - https://drive.google.com/open?id=ID
  */
 export const getDriveDirectLink = (url: string | undefined): string => {
   if (!url) return '';
@@ -29,30 +25,23 @@ export const getDriveDirectLink = (url: string | undefined): string => {
 };
 
 /**
- * Converts video URLs (YouTube, Google Drive) into embeddable iframe URLs.
+ * Converts Google Drive video URLs into embeddable iframe URLs.
+ * Strictly formats for Google Drive /preview mode.
  */
 export const getVideoEmbedUrl = (url: string | undefined): string => {
   if (!url) return '';
 
   // Handle Google Drive
   if (url.includes('drive.google.com')) {
-    // Convert /view to /preview for embedding
-    return url.replace(/\/view.*/, '/preview').replace(/\/usp=.*/, '/preview');
+    // We need the ID to construct a clean preview URL
+    const matchFileId = url.match(/[-\w]{25,}/);
+    const id = matchFileId ? matchFileId[0] : null;
+
+    if (id) {
+      return `https://drive.google.com/file/d/${id}/preview`;
+    }
   }
 
-  // Handle YouTube
-  if (url.includes('youtube.com') || url.includes('youtu.be')) {
-     if (url.includes('/embed/')) return url;
-     
-     let videoId = '';
-     if (url.includes('youtu.be/')) {
-        videoId = url.split('youtu.be/')[1].split('?')[0];
-     } else if (url.includes('v=')) {
-        videoId = url.split('v=')[1].split('&')[0];
-     }
-     
-     if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
-  }
-
+  // Fallback: Return URL as is, but we prioritize Drive above.
   return url;
 };

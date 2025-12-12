@@ -18,7 +18,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
   agency: {
     name: "Digital Craft Productions",
     tagline: "Full-Spectrum Digital Marketing in Nepal",
-    logo: "", 
+    logo: "/images/logo.svg", 
   },
   hero: {
     titlePrefix: "We Craft Digital",
@@ -171,7 +171,6 @@ export const SERVICES: Service[] = [
   },
 ];
 
-// Updated image paths to match exact filenames from GitHub (mostly .jpeg)
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
@@ -179,7 +178,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Operations Team',
     company: 'Basanta Adventure Treks',
     content: 'DCP handled our trekking logistics content and digital presence flawlessly. Their understanding of the tourism industry in Nepal is exceptional.',
-    image: '/images/basanta.jpeg',
+    image: '/images/basanta.svg',
   },
   {
     id: '2',
@@ -187,7 +186,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Management',
     company: 'Life Care Health Home',
     content: 'Our social media engagement skyrocketed after DCP took over. They create content that genuinely connects with patients and families.',
-    image: '/images/lifecare.jpeg',
+    image: '/images/lifecare.svg',
   },
   {
     id: '3',
@@ -195,7 +194,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Administrator',
     company: 'Kathmandu Valley Education Center',
     content: 'From student recruitment ads to educational reels, Digital Craft Productions has been a vital partner in our growth.',
-    image: '/images/kathmanduValley.jpeg',
+    image: '/images/kvec.svg',
   },
   {
     id: '4',
@@ -203,25 +202,36 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Owner',
     company: 'Bajthala Traditional Homes',
     content: 'They captured the essence of Nepali hospitality perfectly. Our bookings increased significantly thanks to their visual storytelling.',
-    image: '/images/bajthala.png', 
+    image: '/images/bajthala.svg', 
   },
 ];
+
+// --- PORTFOLIO CONFIGURATION ---
+// YOUR GOOGLE DRIVE FOLDER: https://drive.google.com/drive/folders/1RKzpf0HFcceKiKx3T32xmznDuNbj4UdK
+//
+// INSTRUCTIONS:
+// 1. Open your Drive folder link above.
+// 2. Right-click a specific video file -> "Get Link" -> "Copy Link"
+// 3. Paste that link into the 'videoUrl' field below for the corresponding item.
+//    Example: videoUrl: 'https://drive.google.com/file/d/1aBcDeFgHiJkLmNoPqRsTuVwXyZ/view?usp=sharing'
+//
+// NOTE: If you leave videoUrl empty (''), the site will display the image instead of a broken player.
 
 export const PORTFOLIO: PortfolioItem[] = [
   {
     id: '1',
     title: 'Basanta Adventure Treks',
     category: 'Trek Coordination & Social',
-    image: '/images/basanta.jpeg',
+    image: '/images/basanta.svg',
     description: 'Logistics coordination and digital storytelling for international trekking expeditions.',
     type: 'video', 
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1', 
+    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
   },
   {
     id: '2',
     title: 'Epicenter Education',
     category: 'Web Dev & Marketing',
-    image: '/images/epicenter.jpeg',
+    image: '/images/epicenter.svg',
     description: 'Full website development, SEO, and student recruitment campaigns.',
     type: 'image',
   },
@@ -229,7 +239,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '3',
     title: 'Life Care Health Home',
     category: 'Content Creation',
-    image: '/images/lifecare.jpeg',
+    image: '/images/lifecare.svg',
     description: 'Healthcare awareness campaigns and patient support content strategy.',
     type: 'image',
   },
@@ -237,7 +247,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '4',
     title: 'The Perch, Naxal',
     category: 'Social Media Growth',
-    image: '/images/perch.jpeg',
+    image: '/images/perch.svg',
     description: 'Creative visuals and event promotion increasing footfall and engagement.',
     type: 'image',
   },
@@ -245,7 +255,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '5',
     title: 'Kathmandu Valley Education',
     category: 'Ads & Branding',
-    image: '/images/kathmanduValley.jpeg',
+    image: '/images/kvec.svg',
     description: 'Targeted ad campaigns and monthly content strategy for student enrollment.',
     type: 'image',
   },
@@ -253,25 +263,25 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '6',
     title: 'Bajthala Traditional Homes',
     category: 'Hospitality Branding',
-    image: '/images/bajthala.png', 
+    image: '/images/bajthala.svg', 
     description: 'Showcasing Nepali culture and lifestyle to attract domestic and international guests.',
     type: 'video',
-    videoUrl: 'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&mute=1',
+    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
   },
   {
     id: '7',
     title: 'Best Loksewa Support',
     category: 'Video Production & SEO',
-    image: '/images/loksewasupport.jpeg',
+    image: '/images/loksewa.svg',
     description: 'YouTube management, thumbnail design, and SEO for Loksewa preparation content.',
     type: 'video',
-    videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1',
+    videoUrl: '', // PASTE YOUR SPECIFIC DRIVE VIDEO LINK HERE
   },
   {
     id: '8',
     title: 'Karobar Restaurant',
     category: 'Social Media & Menu',
-    image: '/images/karobar.jpeg',
+    image: '/images/karobar.svg',
     description: 'Appetizing food photography and social media management.',
     type: 'image',
   },
@@ -279,7 +289,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '9',
     title: 'Plan Himalaya',
     category: 'Brand Identity',
-    image: '/images/planHimalaya.jpeg',
+    image: '/images/planhimalaya.svg',
     description: 'Visual identity and digital content for adventure tourism.',
     type: 'image',
   },
@@ -287,7 +297,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '10',
     title: 'Natural Glow Beauty',
     category: 'Beauty Branding',
-    image: '/images/naturalGlow.jpeg',
+    image: '/images/naturalglow.svg',
     description: 'Elegant visual identity and social media presence for beauty services.',
     type: 'image',
   }

@@ -84,9 +84,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center space-x-2.5 group">
+          <NavLink to="/" className="flex items-center space-x-3 group">
             {logoUrl ? (
-              <img src={logoUrl} alt={agencyName} className="h-10 w-auto object-contain rounded-lg" />
+              <img src={logoUrl} alt={agencyName} className="h-10 w-10 object-contain drop-shadow-lg" />
             ) : (
               <div className="relative">
                 <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
@@ -96,16 +96,14 @@ const Navbar: React.FC = () => {
               </div>
             )}
             
-            {!logoUrl && (
-              <div className="flex flex-col">
-                <span className={`text-xl font-extrabold tracking-tight leading-none ${logoTextMain} transition-colors duration-300`}>
-                  {mainTextFirst}<span className={`${logoTextAccent} transition-colors duration-300`}>{mainTextSecond}</span>
-                </span>
-                <span className={`text-[0.65rem] font-bold tracking-[0.2em] uppercase ${logoSubText} transition-colors duration-300 mt-0.5`}>
-                  {subText}
-                </span>
-              </div>
-            )}
+            <div className="flex flex-col">
+              <span className={`text-xl font-extrabold tracking-tight leading-none ${logoTextMain} transition-colors duration-300`}>
+                {mainTextFirst}<span className={`${logoTextAccent} transition-colors duration-300`}>{mainTextSecond}</span>
+              </span>
+              <span className={`text-[0.65rem] font-bold tracking-[0.2em] uppercase ${logoSubText} transition-colors duration-300 mt-0.5`}>
+                {subText}
+              </span>
+            </div>
           </NavLink>
 
           {/* Desktop Menu */}
