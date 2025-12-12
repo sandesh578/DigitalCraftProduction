@@ -1,0 +1,8 @@
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="500" height="500" fill="#F8FAFC"/>
+<path d="M250 450C120 380 80 280 80 150H420C420 280 380 380 250 450Z" fill="#DC2626"/>
+<circle cx="250" cy="200" r="80" fill="white"/>
+<path d="M250 150L270 250H230L250 150Z" fill="#DC2626"/>
+<text x="50%" y="40" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="30" fill="#DC2626">BEST LOKSEWA</text>
+<text x="250" y="320" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="60" fill="white">नेपाल</text>
+</svg>

@@ -12,8 +12,11 @@ Key Information:
 - Services: Video Production, Web Development, Scriptwriting, Branding, Social Media Marketing, SEO, Ad Campaigns, Voiceovers, Festive Campaigns, 3D Animation & Modeling.
 - Location: Sukhedhara, Kathmandu.
 - Contact: Email (digitalcraftp@gmail.com), Phone/WhatsApp (+977-9844659531).
-- Office Hours: Sunday to Saturday (Open all week).
-- Stats: 10+ Happy Clients, 20+ Successful Projects.
+- Office Hours: 7 Days Open (Sunday to Saturday). Support available 24/7.
+- Stats: 
+  - 100+ Happy Clients
+  - 100+ Projects Completed
+  - 15+ Projects Processing This Month
 - Tone: Creative, Professional, Culturally Sharp (Nepali/English context), and Enthusiastic.
 - Call to Action: Suggest messaging on WhatsApp or booking a consultation.
 

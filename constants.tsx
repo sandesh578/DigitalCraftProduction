@@ -10,7 +10,33 @@ import {
   Target,
   Box
 } from 'lucide-react';
-import { Service, Testimonial, PortfolioItem } from './types';
+import { Service, Testimonial, PortfolioItem, SiteConfig } from './types';
+
+// --- Config ---
+
+export const DEFAULT_CONFIG: SiteConfig = {
+  agency: {
+    name: "Digital Craft Productions",
+    tagline: "Full-Spectrum Digital Marketing in Nepal",
+    logo: "", 
+  },
+  hero: {
+    titlePrefix: "We Craft Digital",
+    subtitle: "Fast, Creative, and Culturally Sharp. From cinematic video production to viral campaigns, Digital Craft Productions elevates your brand.",
+    stats: {
+      clients: 100,
+      projects: 100,
+      experience: 5,
+      activeProjects: 15
+    }
+  },
+  contact: {
+    whatsapp: "https://wa.me/9779844659531",
+    phone: "+977 9844659531",
+    email: "digitalcraftp@gmail.com",
+    address: "Sukhedhara, Kathmandu"
+  }
+};
 
 export const SERVICES: Service[] = [
   {
@@ -19,6 +45,12 @@ export const SERVICES: Service[] = [
     description: 'High-quality storytelling through visuals. From corporate shoots to viral reels, we capture your brand\'s essence.',
     icon: Video,
     color: 'bg-red-500',
+    features: [
+      '4K/8K Cinema Quality Cameras',
+      'Professional Lighting & Audio Setup',
+      'Drone / Aerial Cinematography',
+      'Advanced Color Grading & VFX'
+    ]
   },
   {
     id: '2',
@@ -26,6 +58,12 @@ export const SERVICES: Service[] = [
     description: 'Custom websites that drive growth. Fast, secure, and SEO-optimized sites built on modern tech stacks.',
     icon: Globe,
     color: 'bg-blue-600',
+    features: [
+      'Mobile-First Responsive Design',
+      'SEO-Optimized Structure',
+      'Fast Loading Speed (Next.js/React)',
+      'CMS & E-commerce Integration'
+    ]
   },
   {
     id: '3',
@@ -33,6 +71,12 @@ export const SERVICES: Service[] = [
     description: 'Crafting your brand voice with compelling copy, scripts, and visual identity that resonates with Nepali audiences.',
     icon: PenTool,
     color: 'bg-purple-600',
+    features: [
+      'Logo & Visual Identity Systems',
+      'Brand Voice & Guidelines',
+      'Compelling Ad Copywriting',
+      'Video Scripting & Storyboarding'
+    ]
   },
   {
     id: '4',
@@ -40,6 +84,12 @@ export const SERVICES: Service[] = [
     description: 'Full-spectrum management for Facebook, Instagram, and TikTok. We handle strategy, posting, and community engagement.',
     icon: Smartphone,
     color: 'bg-pink-500',
+    features: [
+      'Monthly Content Calendars',
+      'Community Engagement & Reply',
+      'Trend Analysis (TikTok/Reels)',
+      'Performance Reporting'
+    ]
   },
   {
     id: '5',
@@ -47,6 +97,12 @@ export const SERVICES: Service[] = [
     description: 'Maximize ROI with targeted ads on Meta, Google, and TikTok. Data-driven performance marketing.',
     icon: Target,
     color: 'bg-orange-500',
+    features: [
+      'Precise Audience Targeting',
+      'A/B Testing Creatives',
+      'Pixel & Conversion Tracking',
+      'ROAS (Return on Ad Spend) Optimization'
+    ]
   },
   {
     id: '6',
@@ -54,6 +110,12 @@ export const SERVICES: Service[] = [
     description: 'Rank higher on Google and track every click. We optimize your digital presence for long-term visibility.',
     icon: BarChart,
     color: 'bg-green-500',
+    features: [
+      'Keyword Research & Strategy',
+      'On-Page & Technical SEO',
+      'Google Business Profile Optimization',
+      'User Behavior Analytics'
+    ]
   },
   {
     id: '7',
@@ -61,6 +123,12 @@ export const SERVICES: Service[] = [
     description: 'Professional voiceovers and content in English and Nepali to connect deeply with local customers.',
     icon: Mic,
     color: 'bg-indigo-500',
+    features: [
+      'Native Nepali & English Artists',
+      'Professional Studio Recording',
+      'Translation & Localization',
+      'Audio Mixing & Mastering'
+    ]
   },
   {
     id: '8',
@@ -68,6 +136,12 @@ export const SERVICES: Service[] = [
     description: 'Culturally sharp campaigns for Dashain, Tihar, and other festivals that build emotional connections.',
     icon: Palette,
     color: 'bg-amber-500',
+    features: [
+      'Festival-Specific Storytelling',
+      'Culturally Relevant Visuals',
+      'Emotional Brand Connection',
+      'Multi-channel Distribution'
+    ]
   },
   {
     id: '9',
@@ -75,6 +149,12 @@ export const SERVICES: Service[] = [
     description: 'Trend-focused short-form content designed to go viral and boost brand awareness instantly.',
     icon: Megaphone,
     color: 'bg-cyan-500',
+    features: [
+      'Viral Hook Scripting',
+      'Fast Turnaround Editing',
+      'Trending Audio Selection',
+      'Platform-Specific Optimization'
+    ]
   },
   {
     id: '10',
@@ -82,67 +162,133 @@ export const SERVICES: Service[] = [
     description: 'High-fidelity 3D modeling, product visualization, and character animation to bring your most ambitious ideas to life.',
     icon: Box,
     color: 'bg-emerald-500',
+    features: [
+      'Product Visualization',
+      'Character Animation',
+      'Architectural Walkthroughs',
+      'Motion Graphics'
+    ]
   },
 ];
 
+// Updated image paths to match exact filenames from GitHub (mostly .jpeg)
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    name: 'Sushil K.',
-    role: 'Founder',
-    company: 'Kathmandu Gears',
-    content: 'DCP transformed our brand image. Their video production quality is unmatched in Kathmandu. Highly recommended!',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop',
+    name: 'Basanta Adventure',
+    role: 'Operations Team',
+    company: 'Basanta Adventure Treks',
+    content: 'DCP handled our trekking logistics content and digital presence flawlessly. Their understanding of the tourism industry in Nepal is exceptional.',
+    image: '/images/basanta.jpeg',
   },
   {
     id: '2',
-    name: 'Anjali R.',
-    role: 'Marketing Head',
-    company: 'Urban Styles Nepal',
-    content: 'The social media strategy was spot on. We saw a 50% increase in engagement within the first month of working with Digital Craft.',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&auto=format&fit=crop',
+    name: 'Life Care Team',
+    role: 'Management',
+    company: 'Life Care Health Home',
+    content: 'Our social media engagement skyrocketed after DCP took over. They create content that genuinely connects with patients and families.',
+    image: '/images/lifecare.jpeg',
   },
   {
     id: '3',
-    name: 'Ramesh T.',
-    role: 'Director',
-    company: 'Himalayan Education',
-    content: 'Professional, creative, and timely. Their web development team built us a robust platform that our students love.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop',
+    name: 'KVEC Admin',
+    role: 'Administrator',
+    company: 'Kathmandu Valley Education Center',
+    content: 'From student recruitment ads to educational reels, Digital Craft Productions has been a vital partner in our growth.',
+    image: '/images/kathmanduValley.jpeg',
+  },
+  {
+    id: '4',
+    name: 'Bajthala Homes',
+    role: 'Owner',
+    company: 'Bajthala Traditional Homes',
+    content: 'They captured the essence of Nepali hospitality perfectly. Our bookings increased significantly thanks to their visual storytelling.',
+    image: '/images/bajthala.png', 
   },
 ];
 
 export const PORTFOLIO: PortfolioItem[] = [
   {
     id: '1',
-    title: 'Dashain Festival Campaign',
-    category: 'Video Production',
-    // Reliable "Celebration/Lights" image
-    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800&auto=format&fit=crop',
-    description: 'A heartwarming video campaign that reached 500k+ views across platforms.',
+    title: 'Basanta Adventure Treks',
+    category: 'Trek Coordination & Social',
+    image: '/images/basanta.jpeg',
+    description: 'Logistics coordination and digital storytelling for international trekking expeditions.',
+    type: 'video', 
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1', 
   },
   {
     id: '2',
-    title: 'TechHub Nepal Website',
-    category: 'Web Development',
-    // Reliable "Coding/Macbook" image
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
-    description: 'Modern e-commerce platform with seamless payment integration.',
+    title: 'Epicenter Education',
+    category: 'Web Dev & Marketing',
+    image: '/images/epicenter.jpeg',
+    description: 'Full website development, SEO, and student recruitment campaigns.',
+    type: 'image',
   },
   {
     id: '3',
-    title: 'Organic Tea Branding',
-    category: 'Branding',
-    // Reliable "Tea/Nature" image
-    image: 'https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?q=80&w=800&auto=format&fit=crop',
-    description: 'Complete visual identity and packaging design for a local tea brand.',
+    title: 'Life Care Health Home',
+    category: 'Content Creation',
+    image: '/images/lifecare.jpeg',
+    description: 'Healthcare awareness campaigns and patient support content strategy.',
+    type: 'image',
   },
   {
     id: '4',
-    title: 'Fashion Week Reels',
-    category: 'Social Media',
-    // Reliable "Fashion/Model" image
-    image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800&auto=format&fit=crop',
-    description: 'High-energy event coverage and reel editing for Nepal Fashion Week.',
+    title: 'The Perch, Naxal',
+    category: 'Social Media Growth',
+    image: '/images/perch.jpeg',
+    description: 'Creative visuals and event promotion increasing footfall and engagement.',
+    type: 'image',
   },
+  {
+    id: '5',
+    title: 'Kathmandu Valley Education',
+    category: 'Ads & Branding',
+    image: '/images/kathmanduValley.jpeg',
+    description: 'Targeted ad campaigns and monthly content strategy for student enrollment.',
+    type: 'image',
+  },
+  {
+    id: '6',
+    title: 'Bajthala Traditional Homes',
+    category: 'Hospitality Branding',
+    image: '/images/bajthala.png', 
+    description: 'Showcasing Nepali culture and lifestyle to attract domestic and international guests.',
+    type: 'video',
+    videoUrl: 'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&mute=1',
+  },
+  {
+    id: '7',
+    title: 'Best Loksewa Support',
+    category: 'Video Production & SEO',
+    image: '/images/loksewasupport.jpeg',
+    description: 'YouTube management, thumbnail design, and SEO for Loksewa preparation content.',
+    type: 'video',
+    videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1',
+  },
+  {
+    id: '8',
+    title: 'Karobar Restaurant',
+    category: 'Social Media & Menu',
+    image: '/images/karobar.jpeg',
+    description: 'Appetizing food photography and social media management.',
+    type: 'image',
+  },
+  {
+    id: '9',
+    title: 'Plan Himalaya',
+    category: 'Brand Identity',
+    image: '/images/planHimalaya.jpeg',
+    description: 'Visual identity and digital content for adventure tourism.',
+    type: 'image',
+  },
+  {
+    id: '10',
+    title: 'Natural Glow Beauty',
+    category: 'Beauty Branding',
+    image: '/images/naturalGlow.jpeg',
+    description: 'Elegant visual identity and social media presence for beauty services.',
+    type: 'image',
+  }
 ];

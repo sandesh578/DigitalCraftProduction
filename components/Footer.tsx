@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Layers, Mail, MapPin, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Layers, Mail, MapPin, Phone, Settings } from 'lucide-react';
+import ConfigModal from './ConfigModal';
+import { useContent } from '../context/ContentContext';
 
 const Footer: React.FC = () => {
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const { config } = useContent();
+
+  // Parse agency name for consistent logo display
+  const agencyName = config.agency.name || "Digital Craft Productions";
+  const nameParts = agencyName.trim().split(' ');
+  
+  let subText = "PRODUCTIONS";
+  let mainTextFirst = agencyName;
+  let mainTextSecond = "";
+
+  if (nameParts.length > 1) {
+    subText = nameParts[nameParts.length - 1];
+    const mainParts = nameParts.slice(0, -1);
+    mainTextFirst = mainParts[0];
+    if (mainParts.length > 1) {
+      mainTextSecond = mainParts.slice(1).join(' '); 
+    }
+  } else {
+    subText = "AGENCY";
+  }
+
   return (
     <footer className="bg-slate-950 text-slate-300 pt-20 pb-10 border-t border-slate-900 relative overflow-hidden">
        {/* Background Glow */}
        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-indigo-900 to-transparent opacity-50"></div>
+      
+      {/* Config Modal */}
+      <ConfigModal isOpen={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -19,13 +46,13 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="flex flex-col">
                 <span className="text-xl font-bold text-white leading-none">
-                    Digital<span className="text-indigo-400">Craft</span>
+                    {mainTextFirst}<span className="text-indigo-400">{mainTextSecond}</span>
                 </span>
-                <span className="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.15em] mt-0.5">Productions</span>
+                <span className="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.15em] mt-0.5">{subText}</span>
                 </div>
             </NavLink>
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
-              From bold visuals to smart strategy, we craft campaigns that connect, convert, and captivate. Your full-spectrum digital partner in Nepal.
+              {config.agency.tagline || "From bold visuals to smart strategy, we craft campaigns that connect, convert, and captivate."}
             </p>
             <div className="flex space-x-4 pt-2">
               <a href="#" className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm border border-slate-800 hover:border-indigo-500"><Facebook className="h-5 w-5" /></a>
@@ -62,20 +89,20 @@ const Footer: React.FC = () => {
             <ul className="space-y-5">
               <li className="flex items-start space-x-3 group cursor-pointer">
                 <MapPin className="h-5 w-5 text-indigo-500 shrink-0 mt-0.5 group-hover:text-white transition-colors" />
-                <a href="https://maps.google.com/?q=Sukhedhara,Kathmandu" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 group-hover:text-white transition-colors leading-relaxed">
-                  Sukhedhara, Kathmandu, Nepal
+                <a href={`https://maps.google.com/?q=${encodeURIComponent(config.contact.address)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-400 group-hover:text-white transition-colors leading-relaxed">
+                  {config.contact.address}
                 </a>
               </li>
               <li className="flex items-center space-x-3 group">
                 <Phone className="h-5 w-5 text-indigo-500 shrink-0 group-hover:text-white transition-colors" />
-                <a href="tel:+9779844659531" className="text-sm text-slate-400 group-hover:text-white transition-colors font-medium">
-                  +977 9844659531
+                <a href={`tel:${config.contact.phone.replace(/\s+/g, '')}`} className="text-sm text-slate-400 group-hover:text-white transition-colors font-medium">
+                  {config.contact.phone}
                 </a>
               </li>
               <li className="flex items-center space-x-3 group">
                 <Mail className="h-5 w-5 text-indigo-500 shrink-0 group-hover:text-white transition-colors" />
-                <a href="mailto:digitalcraftp@gmail.com" className="text-sm text-slate-400 group-hover:text-white transition-colors break-all">
-                  digitalcraftp@gmail.com
+                <a href={`mailto:${config.contact.email}`} className="text-sm text-slate-400 group-hover:text-white transition-colors break-all">
+                  {config.contact.email}
                 </a>
               </li>
             </ul>
@@ -83,10 +110,19 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center animate-fade-in-up delay-300">
-          <p className="text-sm text-slate-600 text-center md:text-left">© 2024 Digital Craft Productions (DCP). All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <p className="text-sm text-slate-600 text-center md:text-left">© {new Date().getFullYear()} {config.agency.name}. All rights reserved.</p>
+          <div className="flex space-x-6 mt-4 md:mt-0 items-center">
             <a href="#" className="text-xs text-slate-600 hover:text-indigo-400 transition-colors">Privacy Policy</a>
             <a href="#" className="text-xs text-slate-600 hover:text-indigo-400 transition-colors">Terms of Service</a>
+            
+            {/* Customize Site Button */}
+            <button 
+              onClick={() => setIsConfigOpen(true)}
+              className="flex items-center text-xs text-slate-700 hover:text-indigo-400 transition-colors ml-4 border border-slate-800 px-2 py-1 rounded hover:border-indigo-500"
+              title="Customize Site Settings"
+            >
+              <Settings className="w-3 h-3 mr-1" /> Customize
+            </button>
           </div>
         </div>
       </div>

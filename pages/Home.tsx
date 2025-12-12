@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Star, Video, Zap, ChevronLeft, ChevronRight, Quote, Globe, Sparkles, Target, Heart, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Video, Zap, ChevronLeft, ChevronRight, Quote, Globe, Sparkles, Target, Heart, Users, Activity } from 'lucide-react';
 import { SERVICES, TESTIMONIALS } from '../constants';
 import SEO from '../components/SEO';
+import { useContent } from '../context/ContentContext';
 
 // Animated Counter Component
 const CountUp: React.FC<{ end: number; duration?: number; suffix?: string }> = ({ end, duration = 2000, suffix = '' }) => {
@@ -11,6 +12,12 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string }> = (
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Immediate check if IntersectionObserver is not supported or if element is already visible
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -32,19 +39,27 @@ const CountUp: React.FC<{ end: number; duration?: number; suffix?: string }> = (
     if (!isVisible) return;
 
     let startTime: number | null = null;
+    let animationFrameId: number;
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(progress / duration, 1);
       
-      setCount(Math.floor(end * percentage));
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
+      
+      setCount(Math.floor(end * easeOutQuart));
 
       if (progress < duration) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        setCount(end); // Ensure it lands exactly on end value
       }
     };
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isVisible, end, duration]);
 
   return <span ref={countRef}>{count}{suffix}</span>;
@@ -101,6 +116,8 @@ const Home: React.FC = () => {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const { config } = useContent();
+  const [activeProjectsCount, setActiveProjectsCount] = useState(15);
   
   const typewriterWords = ["Masterpieces", "Growth", "Stories", "Experiences", "Brands"];
   const marqueeItems = [
@@ -115,6 +132,18 @@ const Home: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Calculate dynamic project count based on Month/Year
+  useEffect(() => {
+    const date = new Date();
+    // Use Month and Year to seed the count so it changes monthly but is consistent for that month
+    const seed = date.getFullYear() * 12 + date.getMonth();
+    // Simple pseudo-random logic:
+    // (Seed * 7) % 11 gives a number between 0 and 10.
+    // Adding 15 gives a range of 15 to 25.
+    const variance = (seed * 7) % 11; 
+    setActiveProjectsCount(15 + variance);
   }, []);
 
   // Testimonial Carousel Logic
@@ -153,7 +182,7 @@ const Home: React.FC = () => {
     <div className="overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <SEO 
         title="Home" 
-        description="Digital Craft Productions (DCP) is Nepal's premier digital marketing agency. We specialize in video production, web development, SEO, and branding strategies."
+        description={`${config.agency.tagline}. We specialize in video production, web development, SEO, and branding strategies.`}
         keywords="digital marketing nepal, video production kathmandu, web development, branding agency, seo services nepal"
       />
       
@@ -184,19 +213,26 @@ const Home: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 text-sm font-semibold mb-8 backdrop-blur-md shadow-lg shadow-indigo-900/20 ring-1 ring-white/10 hover:scale-105 transition-transform cursor-default">
             <span className="flex h-2.5 w-2.5 rounded-full bg-indigo-400 mr-2 animate-pulse shadow-[0_0_10px_rgba(129,140,248,0.8)]"></span>
-            Full-Spectrum Digital Marketing in Nepal
+            {config.agency.tagline}
           </div>
+          
+          <div className="mb-6 animate-fade-in-up">
+             <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+               <Activity className="w-3 h-3 mr-1.5 animate-pulse" />
+               <CountUp end={activeProjectsCount} suffix="+" duration={1500} /> Projects Processing This Month
+             </span>
+          </div>
+
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white mb-8 leading-[1.1] drop-shadow-sm min-h-[3em] md:min-h-[2.5em]">
-            We Craft Digital <br/>
+            {config.hero.titlePrefix} <br/>
             <TypewriterText words={typewriterWords} />
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-xl md:text-2xl text-slate-300 mb-12 leading-relaxed animate-fade-in-up delay-100 font-light">
-            Fast, Creative, and Culturally Sharp. From cinematic video production to viral campaigns, 
-            <span className="text-white font-medium"> Digital Craft Productions</span> elevates your brand.
+            {config.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-5 animate-fade-in-up delay-200">
             <a
-              href="https://wa.me/9779844659531"
+              href={config.contact.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold rounded-full hover:from-indigo-500 hover:to-violet-500 transition-all shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1"
@@ -215,21 +251,21 @@ const Home: React.FC = () => {
           <div className="mt-24 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-12 animate-fade-in-up delay-300 bg-white/5 rounded-3xl backdrop-blur-sm p-8 mx-auto max-w-6xl">
             <div className="flex flex-col items-center group cursor-default">
               <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-300">
-                <CountUp end={10} suffix="+" />
+                <CountUp end={config.hero.stats.clients} suffix="+" />
               </span>
               <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Happy Clients</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
               <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-purple-400 transition-colors duration-300">
-                <CountUp end={20} suffix="+" />
+                <CountUp end={config.hero.stats.projects} suffix="+" />
               </span>
               <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Projects Delivered</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
               <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">
-                 <CountUp end={7} />
+                 7 Days
               </span>
-              <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Days Open</span>
+              <span className="text-xs md:text-sm text-slate-400 mt-2 font-bold uppercase tracking-widest">Open</span>
             </div>
             <div className="flex flex-col items-center group cursor-default">
               <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-300">24/7</span>
@@ -277,7 +313,7 @@ const Home: React.FC = () => {
                 className={`group p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-100/50 dark:hover:shadow-none transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 ring-4 ring-white dark:ring-slate-700`}>
+                <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 text-white shadow-lg transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-6 hover:!scale-125 hover:!rotate-0 hover:shadow-indigo-500/50 ring-4 ring-white dark:ring-slate-700`}>
                   <service.icon className="h-8 w-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{service.title}</h3>
@@ -336,7 +372,7 @@ const Home: React.FC = () => {
               </h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
                 We are more than just a marketing agency; we are your creative partners. 
-                Based in <span className="font-semibold text-slate-900 dark:text-white">Sukhedhara, Kathmandu</span>, we understand the local heartbeat while delivering global-standard content.
+                Based in <span className="font-semibold text-slate-900 dark:text-white">{config.contact.address}</span>, we understand the local heartbeat while delivering global-standard content.
               </p>
               <ul className="space-y-6">
                 <li className="flex items-start">
@@ -433,7 +469,7 @@ const Home: React.FC = () => {
                         More Than Just An Agency
                     </h2>
                     <p className="text-lg text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
-                        Founded in 2020 in the vibrant neighborhood of Sukhedhara, Kathmandu, Digital Craft Productions (DCP) started with a singular mission: to bridge the gap between traditional Nepali business values and the fast-paced world of digital marketing.
+                        Founded in 2020 in the vibrant neighborhood of Sukhedhara, Kathmandu, {config.agency.name} started with a singular mission: to bridge the gap between traditional Nepali business values and the fast-paced world of digital marketing.
                     </p>
                     <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
                         We believe that every brand has a story waiting to be told. Our team of passionate creators, strategists, and tech enthusiasts work tirelessly to turn your vision into a digital reality that resonates with audiences locally and globally.
@@ -489,7 +525,7 @@ const Home: React.FC = () => {
             <div className="flex justify-center items-center space-x-1 mb-4">
                 {[1,2,3,4,5].map(i => <Star key={i} className="h-6 w-6 text-amber-400 fill-current animate-pulse" style={{ animationDelay: `${i * 100}ms` }} />)}
             </div>
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Based on 10+ successful partnerships.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Based on 100+ successful partnerships.</p>
           </div>
           
           <div className="relative max-w-4xl mx-auto">
@@ -524,7 +560,12 @@ const Home: React.FC = () => {
                   <div key={t.id} className="min-w-full p-8 md:p-16 flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
                      <div className="relative shrink-0">
                          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-purple-500">
-                             <img src={t.image} alt={t.name} className="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-800" />
+                             <img 
+                               src={t.image} 
+                               alt={t.name} 
+                               className="w-full h-full rounded-full object-contain bg-white border-4 border-white dark:border-slate-800" 
+                               onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                             />
                          </div>
                          <div className="absolute -bottom-2 -right-2 bg-indigo-600 text-white p-2 rounded-full shadow-lg">
                              <Quote className="h-4 w-4 fill-current" />
@@ -581,7 +622,7 @@ const Home: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fade-in-up">
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-8 tracking-tight">Let's Build Something <br/> Amazing Together.</h2>
           <p className="text-indigo-200 text-xl mb-12 max-w-2xl mx-auto font-light">
-            Ready to take your brand to the next level? Contact DCP today for a free strategy session.
+            Ready to take your brand to the next level? Contact {config.agency.name} today for a free strategy session.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-5">
              <NavLink
@@ -591,7 +632,7 @@ const Home: React.FC = () => {
               Start a Project
             </NavLink>
              <a
-              href="https://wa.me/9779844659531"
+              href={config.contact.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-10 py-4 border border-indigo-400 bg-indigo-900/50 text-white font-bold rounded-full hover:bg-indigo-800 transition-all hover:-translate-y-1 transform backdrop-blur-sm"

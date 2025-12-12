@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
+import { ContentProvider } from './context/ContentContext';
 
 // Theme Context
 interface ThemeContextType {
@@ -112,36 +113,38 @@ const App: React.FC = () => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <Router>
-        <ScrollToTop />
-        <CustomCursor />
-        <div className="flex flex-col min-h-screen transition-colors duration-300">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </main>
-          <Footer />
-          <ChatWidget />
-          
-          {/* Back to Top Button */}
-          <button
-            onClick={scrollToTop}
-            className={`fixed bottom-24 right-6 z-40 p-3 rounded-full bg-slate-900 dark:bg-slate-700 text-white shadow-xl border border-slate-700 dark:border-slate-600 transition-all duration-300 hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:-translate-y-1 ${
-              showScrollTop ? 'opacity-100 scale-100' : 'opacity-0 scale-75 pointer-events-none'
-            }`}
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="h-5 w-5" />
-          </button>
-        </div>
-      </Router>
-    </ThemeContext.Provider>
+    <ContentProvider>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <Router>
+          <ScrollToTop />
+          <CustomCursor />
+          <div className="flex flex-col min-h-screen transition-colors duration-300">
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+            </main>
+            <Footer />
+            <ChatWidget />
+            
+            {/* Back to Top Button */}
+            <button
+              onClick={scrollToTop}
+              className={`fixed bottom-24 right-6 z-40 p-3 rounded-full bg-slate-900 dark:bg-slate-700 text-white shadow-xl border border-slate-700 dark:border-slate-600 transition-all duration-300 hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:-translate-y-1 ${
+                showScrollTop ? 'opacity-100 scale-100' : 'opacity-0 scale-75 pointer-events-none'
+              }`}
+              aria-label="Scroll to top"
+            >
+              <ArrowUp className="h-5 w-5" />
+            </button>
+          </div>
+        </Router>
+      </ThemeContext.Provider>
+    </ContentProvider>
   );
 };
 

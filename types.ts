@@ -6,6 +6,7 @@ export interface Service {
   description: string;
   icon: LucideIcon;
   color: string;
+  features: string[]; // Added specific features list
 }
 
 export interface Testimonial {
@@ -23,6 +24,8 @@ export interface PortfolioItem {
   category: string;
   image: string;
   description: string;
+  type: 'image' | 'video'; 
+  videoUrl?: string;       
 }
 
 export interface ChatMessage {
@@ -30,4 +33,28 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
   timestamp: Date;
+}
+
+export interface SiteConfig {
+  agency: {
+    name: string;
+    tagline: string;
+    logo?: string;
+  };
+  hero: {
+    titlePrefix: string;
+    subtitle: string;
+    stats: {
+      clients: number;
+      projects: number;
+      experience: number;
+      activeProjects: number;
+    };
+  };
+  contact: {
+    whatsapp: string;
+    phone: string;
+    email: string;
+    address: string;
+  };
 }

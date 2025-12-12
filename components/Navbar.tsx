@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, Layers, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../App';
+import { useContent } from '../context/ContentContext';
+import { getDriveDirectLink } from '../utils/driveHelper';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { config } = useContent();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +46,33 @@ const Navbar: React.FC = () => {
       isActive ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 dark:text-indigo-400' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800'
     }`;
 
+  // Parse agency name for logo splitting to avoid redundancy
+  const agencyName = config.agency.name || "Digital Craft Productions";
+  const nameParts = agencyName.trim().split(' ');
+  
+  let subText = "PRODUCTIONS";
+  let mainTextFirst = agencyName;
+  let mainTextSecond = "";
+
+  if (nameParts.length > 1) {
+    // Use the last word as the subtitle
+    subText = nameParts[nameParts.length - 1];
+    
+    // Use the rest as the main title
+    const mainParts = nameParts.slice(0, -1);
+    
+    // Split main title into two parts for styling (First word vs Rest)
+    mainTextFirst = mainParts[0];
+    if (mainParts.length > 1) {
+      mainTextSecond = mainParts.slice(1).join(' '); 
+    }
+  } else {
+    // Single word name fallback
+    subText = "AGENCY";
+  }
+
+  const logoUrl = getDriveDirectLink(config.agency.logo);
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 ease-in-out border-b ${
@@ -55,20 +85,27 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-2.5 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div className="relative p-2.5 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-xl shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300 ring-1 ring-white/10">
-                <Layers className="h-6 w-6 text-white" />
+            {logoUrl ? (
+              <img src={logoUrl} alt={agencyName} className="h-10 w-auto object-contain rounded-lg" />
+            ) : (
+              <div className="relative">
+                <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div className="relative p-2.5 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-xl shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300 ring-1 ring-white/10">
+                  <Layers className="h-6 w-6 text-white" />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col">
-              <span className={`text-xl font-extrabold tracking-tight leading-none ${logoTextMain} transition-colors duration-300`}>
-                Digital<span className={`${logoTextAccent} transition-colors duration-300`}>Craft</span>
-              </span>
-              <span className={`text-[0.65rem] font-bold tracking-[0.2em] uppercase ${logoSubText} transition-colors duration-300 mt-0.5`}>
-                Productions
-              </span>
-            </div>
+            )}
+            
+            {!logoUrl && (
+              <div className="flex flex-col">
+                <span className={`text-xl font-extrabold tracking-tight leading-none ${logoTextMain} transition-colors duration-300`}>
+                  {mainTextFirst}<span className={`${logoTextAccent} transition-colors duration-300`}>{mainTextSecond}</span>
+                </span>
+                <span className={`text-[0.65rem] font-bold tracking-[0.2em] uppercase ${logoSubText} transition-colors duration-300 mt-0.5`}>
+                  {subText}
+                </span>
+              </div>
+            )}
           </NavLink>
 
           {/* Desktop Menu */}
