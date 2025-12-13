@@ -73,9 +73,10 @@ const Footer: React.FC = () => {
             <h3 className="text-white font-bold mb-6 text-lg tracking-tight">Company</h3>
             <ul className="space-y-3">
               <li><NavLink to="/" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>Home</NavLink></li>
+              <li><NavLink to="/about" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>About Us</NavLink></li>
               <li><NavLink to="/services" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>Services</NavLink></li>
               <li><NavLink to="/portfolio" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>Our Work</NavLink></li>
-              <li><NavLink to="/contact" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>Contact</NavLink></li>
+              <li><NavLink to="/proposal" className="text-sm text-slate-400 hover:text-indigo-400 transition-colors flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2 opacity-0 hover:opacity-100 transition-opacity"></span>Proposal</NavLink></li>
             </ul>
           </div>
 

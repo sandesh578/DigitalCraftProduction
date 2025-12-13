@@ -1,7 +1,0 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="500" height="500" fill="#F8FAFC"/>
-<path d="M250 50L50 400H450L250 50Z" fill="#0EA5E9"/>
-<path d="M250 50L180 400H320L250 50Z" fill="#E0F2FE"/>
-<path d="M150 400L250 200L350 400" stroke="white" stroke-width="20" stroke-linecap="round"/>
-<text x="50%" y="460" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="36" fill="#0369A1">PLAN HIMALAYA</text>
-</svg>

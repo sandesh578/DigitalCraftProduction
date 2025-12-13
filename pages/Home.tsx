@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Star, Video, Zap, ChevronLeft, ChevronRight, Quote, Globe, Sparkles, Target, Heart, Users, Activity } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Video, Zap, ChevronLeft, ChevronRight, Quote, Globe, Sparkles, Activity } from 'lucide-react';
 import { SERVICES, TESTIMONIALS } from '../constants';
 import SEO from '../components/SEO';
 import { useContent } from '../context/ContentContext';
@@ -248,7 +248,7 @@ const Home: React.FC = () => {
           </div>
 
           {/* Stats */}
-          <div className="mt-24 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-12 animate-fade-in-up delay-300 bg-white/5 rounded-3xl backdrop-blur-sm p-8 mx-auto max-w-6xl">
+          <div className="mt-24 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-12 animate-fade-in-up delay-300 bg-white/5 rounded-3xl backdrop-blur-sm p-8 mx-auto max-w-6xl hover:shadow-[0_0_30px_rgba(79,70,229,0.15)] transition-shadow">
             <div className="flex flex-col items-center group cursor-default">
               <span className="text-4xl md:text-5xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-300">
                 <CountUp end={config.hero.stats.clients} suffix="+" />
@@ -310,10 +310,10 @@ const Home: React.FC = () => {
             {SERVICES.slice(0, 3).map((service, index) => (
               <div 
                 key={service.id} 
-                className={`group p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-100/50 dark:hover:shadow-none transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up`}
+                className={`group p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-500/20 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 text-white shadow-lg transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-6 hover:!scale-125 hover:!rotate-0 hover:shadow-indigo-500/50 ring-4 ring-white dark:ring-slate-700`}>
+                <div className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-8 text-white shadow-lg transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-6 hover:!scale-125 hover:!rotate-0 hover:shadow-red-500/50 ring-4 ring-white dark:ring-slate-700`}>
                   <service.icon className="h-8 w-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{service.title}</h3>
@@ -327,14 +327,14 @@ const Home: React.FC = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <NavLink to="/services" className="inline-flex px-8 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 transition-all hover:shadow-lg hover:-translate-y-1">
+            <NavLink to="/services" className="inline-flex px-8 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-red-500/50 transition-all hover:shadow-lg hover:shadow-red-500/10 hover:-translate-y-1">
               Explore All Services
             </NavLink>
           </div>
         </div>
       </section>
 
-      {/* Feature / About Snippet */}
+      {/* Feature / About Snippet (Shortened for Linking) */}
       <section className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden relative">
          {/* Background decoration */}
          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-indigo-200 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-20"></div>
@@ -345,7 +345,7 @@ const Home: React.FC = () => {
             <div className="relative order-2 lg:order-1 animate-fade-in-up">
               <div className="absolute -top-6 -left-6 w-72 h-72 bg-indigo-400 dark:bg-indigo-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-2xl opacity-30 animate-blob"></div>
               <div className="absolute -bottom-8 -right-8 w-72 h-72 bg-fuchsia-400 dark:bg-fuchsia-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-2xl opacity-30 animate-blob animation-delay-2000"></div>
-              <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white dark:border-slate-800 transform rotate-1 hover:rotate-0 transition-transform duration-500 group">
+              <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white dark:border-slate-800 transform rotate-1 hover:rotate-0 transition-transform duration-500 group hover:border-red-500/50">
                  <img 
                     src="https://images.unsplash.com/photo-1585565804112-f201f68c48b4?q=80&w=800&auto=format&fit=crop" 
                     alt="Video Production" 
@@ -374,35 +374,10 @@ const Home: React.FC = () => {
                 We are more than just a marketing agency; we are your creative partners. 
                 Based in <span className="font-semibold text-slate-900 dark:text-white">{config.contact.address}</span>, we understand the local heartbeat while delivering global-standard content.
               </p>
-              <ul className="space-y-6">
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center border border-indigo-100 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 mr-5">
-                     <CheckCircle className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-slate-900 dark:text-white">High-End Video Production</h4>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">Commercials, Music Videos, and Reels.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center border border-purple-100 dark:border-purple-800 text-purple-600 dark:text-purple-400 mr-5">
-                     <CheckCircle className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-slate-900 dark:text-white">Festive & Cultural Campaigns</h4>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">Connecting with Nepali traditions.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center border border-pink-100 dark:border-pink-800 text-pink-600 dark:text-pink-400 mr-5">
-                     <CheckCircle className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-slate-900 dark:text-white">Result-Oriented Ads</h4>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">Optimized for Meta, TikTok & Google.</p>
-                  </div>
-                </li>
-              </ul>
+              
+              <NavLink to="/about" className="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-bold hover:underline hover:text-red-500 transition-colors">
+                  Read Our Full Story <ArrowRight className="ml-2 h-4 w-4" />
+              </NavLink>
             </div>
           </div>
         </div>
@@ -420,7 +395,7 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1: Cultural Understanding */}
-            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-100">
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-red-500/50 hover:shadow-red-500/20 transition-all duration-300 group animate-fade-in-up delay-100">
               <div className="w-14 h-14 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Globe className="h-7 w-7 text-orange-600 dark:text-orange-400" />
               </div>
@@ -431,7 +406,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* Card 2: Speed */}
-            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-200">
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-red-500/50 hover:shadow-red-500/20 transition-all duration-300 group animate-fade-in-up delay-200">
               <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Zap className="h-7 w-7 text-blue-600 dark:text-blue-400" />
               </div>
@@ -442,7 +417,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* Card 3: Creative Expertise */}
-            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all duration-300 group animate-fade-in-up delay-300">
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-red-500/50 hover:shadow-red-500/20 transition-all duration-300 group animate-fade-in-up delay-300">
               <div className="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Sparkles className="h-7 w-7 text-purple-600 dark:text-purple-400" />
               </div>
@@ -452,68 +427,6 @@ const Home: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* About Digital Craft Productions */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
-            <div className="absolute top-[10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-indigo-100 dark:bg-indigo-900/10 blur-[80px]"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div className="animate-fade-in-up">
-                    <span className="text-indigo-600 dark:text-indigo-400 font-bold tracking-wide uppercase text-sm mb-3 block">Our Story</span>
-                    <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
-                        More Than Just An Agency
-                    </h2>
-                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
-                        Founded in 2020 in the vibrant neighborhood of Sukhedhara, Kathmandu, {config.agency.name} started with a singular mission: to bridge the gap between traditional Nepali business values and the fast-paced world of digital marketing.
-                    </p>
-                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                        We believe that every brand has a story waiting to be told. Our team of passionate creators, strategists, and tech enthusiasts work tirelessly to turn your vision into a digital reality that resonates with audiences locally and globally.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <NavLink to="/contact" className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-500/30">
-                            Get in Touch
-                        </NavLink>
-                         <NavLink to="/portfolio" className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
-                            See Our Journey
-                        </NavLink>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 animate-fade-in-up delay-100">
-                    <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
-                        <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl text-red-600 dark:text-red-400">
-                            <Target className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Our Mission</h3>
-                            <p className="text-slate-600 dark:text-slate-400">To empower 1,000+ Nepali businesses by 2030 with innovative digital solutions that drive measurable growth.</p>
-                        </div>
-                    </div>
-                     <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
-                        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl text-indigo-600 dark:text-indigo-400">
-                            <Heart className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Our Values</h3>
-                            <p className="text-slate-600 dark:text-slate-400">We prioritize transparency, creativity, and results. We treat your business like our own.</p>
-                        </div>
-                    </div>
-                     <div className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all flex items-start space-x-4">
-                        <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl text-emerald-600 dark:text-emerald-400">
-                            <Users className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">The Team</h3>
-                            <p className="text-slate-600 dark:text-slate-400">A diverse collective of filmmakers, coders, and marketers united by a passion for excellence.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
       </section>
 
@@ -547,7 +460,7 @@ const Home: React.FC = () => {
 
             {/* Carousel Viewport */}
             <div 
-              className="overflow-hidden rounded-[2.5rem] bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-2xl shadow-indigo-100/50 dark:shadow-none"
+              className="overflow-hidden rounded-[2.5rem] bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-2xl shadow-indigo-100/50 dark:shadow-none hover:border-red-500/30 transition-colors duration-500"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -627,7 +540,7 @@ const Home: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-5">
              <NavLink
               to="/contact"
-              className="inline-flex items-center justify-center px-10 py-4 bg-white text-indigo-900 font-bold rounded-full hover:bg-indigo-50 transition-all shadow-xl shadow-indigo-900/50 hover:-translate-y-1 transform"
+              className="inline-flex items-center justify-center px-10 py-4 bg-white text-indigo-900 font-bold rounded-full hover:bg-indigo-50 transition-all shadow-xl shadow-indigo-900/50 hover:-translate-y-1 transform hover:shadow-red-500/20"
             >
               Start a Project
             </NavLink>
@@ -635,7 +548,7 @@ const Home: React.FC = () => {
               href={config.contact.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-10 py-4 border border-indigo-400 bg-indigo-900/50 text-white font-bold rounded-full hover:bg-indigo-800 transition-all hover:-translate-y-1 transform backdrop-blur-sm"
+              className="inline-flex items-center justify-center px-10 py-4 border border-indigo-400 bg-indigo-900/50 text-white font-bold rounded-full hover:bg-indigo-800 transition-all hover:-translate-y-1 transform backdrop-blur-sm hover:border-red-400"
             >
               Chat on WhatsApp
             </a>

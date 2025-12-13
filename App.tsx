@@ -5,9 +5,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
 import Home from './pages/Home';
+import About from './pages/About';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
+import Proposal from './pages/Proposal';
 import { ContentProvider } from './context/ContentContext';
 
 // Theme Context
@@ -123,8 +125,10 @@ const App: React.FC = () => {
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/proposal" element={<Proposal />} />
                 <Route path="/contact" element={<Contact />} />
               </Routes>
             </main>

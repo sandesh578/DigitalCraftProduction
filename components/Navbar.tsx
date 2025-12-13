@@ -14,7 +14,8 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      // Trigger effect with a slight buffer for a smoother experience
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -75,10 +76,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-500 ease-in-out border-b ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out border-b ${
         scrolled 
-          ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shadow-lg border-slate-200/50 dark:border-slate-800/50 py-3 translate-y-0 opacity-100' 
-          : 'bg-transparent border-transparent py-5 translate-y-0'
+          ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-indigo-900/5 border-slate-200/50 dark:border-slate-800/50 py-3' 
+          : 'bg-transparent border-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,7 +87,7 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-3 group">
             {logoUrl ? (
-              <img src={logoUrl} alt={agencyName} className="h-10 w-10 object-contain drop-shadow-lg" />
+              <img src={logoUrl} alt={agencyName} className="h-10 w-10 object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105" />
             ) : (
               <div className="relative">
                 <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
@@ -109,10 +110,12 @@ const Navbar: React.FC = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
             <NavLink to="/" className={navClasses}>Home</NavLink>
+            <NavLink to="/about" className={navClasses}>About</NavLink>
             <NavLink to="/services" className={navClasses}>Services</NavLink>
             <NavLink to="/portfolio" className={navClasses}>Portfolio</NavLink>
+            <NavLink to="/proposal" className={navClasses}>Proposal</NavLink>
             <NavLink to="/contact" className={({ isActive }) => 
-              `px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-lg hover:shadow-indigo-500/25 transform hover:-translate-y-0.5 ${
+              `px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 transform hover:-translate-y-0.5 ${
                 isActive 
                 ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900' 
                 : 'bg-indigo-600 text-white hover:bg-indigo-700'
@@ -124,7 +127,7 @@ const Navbar: React.FC = () => {
             {/* Theme Toggle */}
             <button 
               onClick={toggleTheme}
-              className={`p-2 rounded-full transition-colors ${isTransparent ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              className={`p-2 rounded-full transition-colors duration-300 ${isTransparent ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
               aria-label="Toggle Dark Mode"
             >
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -136,14 +139,14 @@ const Navbar: React.FC = () => {
              {/* Theme Toggle Mobile */}
              <button 
               onClick={toggleTheme}
-              className={`p-2 rounded-full transition-colors ${isTransparent ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              className={`p-2 rounded-full transition-colors duration-300 ${isTransparent ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
               aria-label="Toggle Dark Mode"
             >
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`${textColorClass} hover:text-indigo-500 focus:outline-none p-2 transition-colors`}
+              className={`${textColorClass} hover:text-indigo-500 focus:outline-none p-2 transition-colors duration-300`}
             >
               {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </button>
@@ -156,8 +159,10 @@ const Navbar: React.FC = () => {
         <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl border-t border-slate-100 dark:border-slate-800 animate-slide-down">
           <div className="px-4 pt-4 pb-8 space-y-2">
             <NavLink to="/" className={mobileNavClasses}>Home</NavLink>
+            <NavLink to="/about" className={mobileNavClasses}>About</NavLink>
             <NavLink to="/services" className={mobileNavClasses}>Services</NavLink>
             <NavLink to="/portfolio" className={mobileNavClasses}>Portfolio</NavLink>
+            <NavLink to="/proposal" className={mobileNavClasses}>Proposal</NavLink>
             <NavLink to="/contact" className={mobileNavClasses}>Contact Us</NavLink>
           </div>
         </div>

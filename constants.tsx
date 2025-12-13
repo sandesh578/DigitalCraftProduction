@@ -8,7 +8,9 @@ import {
   Smartphone, 
   Palette,
   Target,
-  Box
+  Box,
+  ShoppingCart,
+  TrendingUp
 } from 'lucide-react';
 import { Service, Testimonial, PortfolioItem, SiteConfig } from './types';
 
@@ -18,7 +20,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
   agency: {
     name: "Digital Craft Productions",
     tagline: "Full-Spectrum Digital Marketing in Nepal",
-    logo: "/jpeg/logo.jpeg", 
+    logo: "https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/logo.jpeg", 
   },
   hero: {
     titlePrefix: "We Craft Digital",
@@ -174,6 +176,32 @@ export const SERVICES: Service[] = [
       'Motion Graphics'
     ]
   },
+  {
+    id: '11',
+    title: 'E-commerce Solutions',
+    description: 'Complete online store setup and management. From inventory systems to payment gateway integration.',
+    icon: ShoppingCart,
+    color: 'bg-teal-500',
+    features: [
+      'Shopify / WooCommerce Setup',
+      'Payment Gateway Integration (Esewa/Khalti)',
+      'Inventory Management Systems',
+      'Sales Funnel Optimization'
+    ]
+  },
+  {
+    id: '12',
+    title: 'Growth Strategy & Consulting',
+    description: 'Data-backed market research and competitor analysis to find your blue ocean in the Nepali market.',
+    icon: TrendingUp,
+    color: 'bg-rose-500',
+    features: [
+      'Market Research & Feasibility',
+      'Competitor Analysis',
+      'Marketing Automation Setup',
+      'Long-term Growth Roadmaps'
+    ]
+  }
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -218,7 +246,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '1',
     title: 'Basanta Adventure Treks',
     category: 'Trek Coordination & Social',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/basanta.jpeg',
     description: 'Logistics coordination and digital storytelling for international trekking expeditions.',
     type: 'video', 
     videoUrl: '', 
@@ -227,7 +255,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '2',
     title: 'Epicenter Education',
     category: 'Web Dev & Marketing',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/epicenter.jpeg',
     description: 'Full website development, SEO, and student recruitment campaigns.',
     type: 'image',
   },
@@ -235,7 +263,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '3',
     title: 'Life Care Health Home',
     category: 'Content Creation',
-    image: 'https://images.unsplash.com/photo-1516574187841-693083f69802?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/lifecare.jpeg',
     description: 'Healthcare awareness campaigns and patient support content strategy.',
     type: 'image',
   },
@@ -243,7 +271,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '4',
     title: 'The Perch, Naxal',
     category: 'Social Media Growth',
-    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/perch.jpeg',
     description: 'Creative visuals and event promotion increasing footfall and engagement.',
     type: 'image',
   },
@@ -251,7 +279,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '5',
     title: 'Kathmandu Valley Education',
     category: 'Ads & Branding',
-    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/kathmanduValley.jpeg',
     description: 'Targeted ad campaigns and monthly content strategy for student enrollment.',
     type: 'image',
   },
@@ -259,7 +287,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '6',
     title: 'Bajthala Traditional Homes',
     category: 'Hospitality Branding',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop', 
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/bajthala.png', 
     description: 'Showcasing Nepali culture and lifestyle to attract domestic and international guests.',
     type: 'video',
     videoUrl: '', 
@@ -268,7 +296,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '7',
     title: 'Best Loksewa Support',
     category: 'Video Production & SEO',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/loksewasupport.jpeg',
     description: 'YouTube management, thumbnail design, and SEO for Loksewa preparation content.',
     type: 'video',
     videoUrl: '', 
@@ -277,7 +305,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '8',
     title: 'Karobar Restaurant',
     category: 'Social Media & Menu',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/karobar.jpeg',
     description: 'Appetizing food photography and social media management.',
     type: 'image',
   },
@@ -285,7 +313,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '9',
     title: 'Plan Himalaya',
     category: 'Brand Identity',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/planHimalaya.jpeg',
     description: 'Visual identity and digital content for adventure tourism.',
     type: 'image',
   },
@@ -293,7 +321,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     id: '10',
     title: 'Natural Glow Beauty',
     category: 'Beauty Branding',
-    image: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=800&auto=format&fit=crop',
+    image: 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/naturalGlow.jpeg',
     description: 'Elegant visual identity and social media presence for beauty services.',
     type: 'image',
   }

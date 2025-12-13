@@ -1,8 +1,0 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="500" height="500" fill="#F8FAFC"/>
-<path d="M250 100C250 100 350 200 350 300C350 355 305 400 250 400C195 400 150 355 150 300C150 200 250 100 250 100Z" fill="#EC4899" fill-opacity="0.2"/>
-<path d="M250 150C250 150 300 220 300 280C300 310 280 330 250 330C220 330 200 310 200 280C200 220 250 150 250 150Z" fill="#EC4899"/>
-<circle cx="200" cy="150" r="10" fill="#F472B6"/>
-<circle cx="300" cy="120" r="15" fill="#F472B6"/>
-<text x="50%" y="450" text-anchor="middle" font-family="cursive" font-weight="bold" font-size="36" fill="#BE185D">Natural Glow</text>
-</svg>

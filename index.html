@@ -123,6 +123,30 @@
       .animation-delay-4000 {
         animation-delay: 4s;
       }
+
+      /* Print Styles for Proposal Page */
+      @media print {
+        nav, footer, .cursor-dot, .cursor-outline, button[aria-label="Scroll to top"], .no-print {
+          display: none !important;
+        }
+        body {
+          cursor: auto !important;
+          background: white !important;
+          color: black !important;
+        }
+        .print-break-inside-avoid {
+          break-inside: avoid;
+        }
+        /* Ensure dark mode text is legible on print */
+        .dark {
+           background-color: white !important;
+           color: black !important;
+        }
+        /* Hide floating chat widget */
+        div[class*="fixed bottom-6"] {
+           display: none !important;
+        }
+      }
     </style>
   <script type="importmap">
 {

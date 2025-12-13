@@ -20,6 +20,92 @@ import VideoPlayer from '../components/VideoPlayer';
 import { useContent } from '../context/ContentContext';
 import { fetchDriveFiles } from '../services/driveService';
 
+// Sub-component for individual cards to handle loading state
+const PortfolioCard: React.FC<{ 
+  item: PortfolioItem; 
+  index: number; 
+  onClick: () => void;
+}> = ({ item, index, onClick }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    if (target.src.includes('ui-avatars.com')) {
+       target.src = '/jpeg/logo.jpeg';
+       target.onerror = null; 
+    } else {
+       target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.title)}&background=random&size=400&font-size=0.33`;
+    }
+    // Ensure skeleton is removed if image errors (fallback is shown)
+    setIsLoaded(true);
+  };
+
+  return (
+    <div 
+        className="break-inside-avoid group cursor-pointer animate-fade-in-up"
+        style={{ animationDelay: `${(index % 10) * 50}ms` }}
+        onClick={onClick}
+    >
+        <div className="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md hover:shadow-xl hover:shadow-red-500/10 hover:border-red-500/30 transition-all duration-300 hover:-translate-y-1">
+            
+            {/* Type Indicator Badge */}
+            <div className="absolute top-3 right-3 z-20">
+                {item.type === 'video' ? (
+                    <div className="bg-red-600/90 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-md flex items-center shadow-sm">
+                        <PlayCircle className="w-3 h-3 mr-1" /> Video
+                    </div>
+                ) : (
+                    <div className="bg-slate-800/80 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-md flex items-center shadow-sm">
+                        <ImageIcon className="w-3 h-3 mr-1" /> Photo
+                    </div>
+                )}
+            </div>
+
+            {/* Image Container */}
+            <div className="aspect-[4/3] w-full relative bg-white dark:bg-slate-950 flex items-center justify-center p-4">
+                
+                {/* Skeleton Loader */}
+                {!isLoaded && (
+                    <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 animate-pulse flex items-center justify-center z-10">
+                         <div className="w-10 h-10 text-slate-300 dark:text-slate-600 opacity-50">
+                             <ImageIcon className="w-full h-full" />
+                         </div>
+                    </div>
+                )}
+
+                <img 
+                    src={getDriveDirectLink(item.image)} 
+                    alt={item.title} 
+                    className={`w-full h-full object-contain transform group-hover:scale-105 transition-all duration-700 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    onLoad={() => setIsLoaded(true)}
+                    onError={handleImageError}
+                />
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 z-20">
+                    <div className="bg-white/20 backdrop-blur-md p-3 rounded-full border border-white/30 text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        {item.type === 'video' && item.videoUrl ? <PlayCircle className="w-6 h-6" /> : <Maximize2 className="w-6 h-6" />}
+                    </div>
+                </div>
+            </div>
+
+            {/* Info Block */}
+            <div className="p-5 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+                <div className="mb-2">
+                    <span className="text-xs font-bold tracking-wider text-indigo-500 uppercase">{item.category}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    {item.title}
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                    {item.description}
+                </p>
+            </div>
+        </div>
+    </div>
+  );
+};
+
 const Portfolio: React.FC = () => {
   const { config } = useContent();
   const [items, setItems] = useState<PortfolioItem[]>([]);
@@ -66,15 +152,13 @@ const Portfolio: React.FC = () => {
 
   const filteredItems = items.filter(item => filter === 'all' || item.type === filter);
 
-  // Robust Image Fallback Handler
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, title: string) => {
+  // Robust Image Fallback Handler for Lightbox (Card handles its own)
+  const handleLightboxImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, title: string) => {
     const target = e.currentTarget;
-    // Prevent infinite loop if the avatar API fails
     if (target.src.includes('ui-avatars.com')) {
-       target.src = '/jpeg/logo.jpeg'; // Final local fallback
-       target.onerror = null; // Prevent further error handling
+       target.src = '/jpeg/logo.jpeg'; 
+       target.onerror = null; 
     } else {
-       // First fallback: Generated Avatar
        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=random&size=400&font-size=0.33`;
     }
   };
@@ -118,15 +202,21 @@ const Portfolio: React.FC = () => {
   }, [lightboxIndex, items.length]);
 
   return (
-    <div className="pt-24 pb-20 bg-white dark:bg-slate-900 min-h-screen transition-colors duration-300">
+    <div className="pt-24 pb-20 bg-white dark:bg-slate-900 min-h-screen transition-colors duration-300 relative overflow-hidden">
       <SEO 
         title="Our Portfolio" 
         description="Browse our latest video productions, websites, and branding projects. Digital Craft Productions - Excellence in every pixel."
         keywords="portfolio, gallery, video showcase, web design examples, dcp nepal work"
       />
+
+      {/* Animated Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] animate-blob"></div>
+          <div className="absolute bottom-[20%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+      </div>
       
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 relative z-10">
         <div className="text-center animate-fade-in-up">
           <span className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm">Our Masterpieces</span>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mt-2 mb-6">Production Gallery</h1>
@@ -186,7 +276,7 @@ const Portfolio: React.FC = () => {
       </div>
 
       {/* Gallery Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {filteredItems.length === 0 ? (
               <div className="text-center py-20 bg-slate-50 dark:bg-slate-800 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700">
                   <p className="text-slate-500 dark:text-slate-400">No items found in this category.</p>
@@ -195,57 +285,12 @@ const Portfolio: React.FC = () => {
           ) : (
               <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
               {filteredItems.map((item, index) => (
-                  <div 
+                  <PortfolioCard 
                       key={item.id} 
-                      className="break-inside-avoid group cursor-pointer animate-fade-in-up"
-                      style={{ animationDelay: `${(index % 10) * 50}ms` }}
-                      onClick={() => openLightbox(index)}
-                  >
-                  <div className="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md group-hover:shadow-xl transition-all duration-300">
-                      
-                      {/* Type Indicator Badge */}
-                      <div className="absolute top-3 right-3 z-20">
-                          {item.type === 'video' ? (
-                              <div className="bg-red-600/90 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-md flex items-center shadow-sm">
-                                  <PlayCircle className="w-3 h-3 mr-1" /> Video
-                              </div>
-                          ) : (
-                              <div className="bg-slate-800/80 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-md flex items-center shadow-sm">
-                                  <ImageIcon className="w-3 h-3 mr-1" /> Photo
-                              </div>
-                          )}
-                      </div>
-
-                      {/* Image Container */}
-                      <div className="aspect-[4/3] w-full relative bg-white dark:bg-slate-950 flex items-center justify-center p-4">
-                          <img 
-                              src={getDriveDirectLink(item.image)} 
-                              alt={item.title} 
-                              className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                              onError={(e) => handleImageError(e, item.title)}
-                          />
-                          {/* Hover Overlay */}
-                          <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                              <div className="bg-white/20 backdrop-blur-md p-3 rounded-full border border-white/30 text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                  {item.type === 'video' && item.videoUrl ? <PlayCircle className="w-6 h-6" /> : <Maximize2 className="w-6 h-6" />}
-                              </div>
-                          </div>
-                      </div>
-
-                      {/* Info Block */}
-                      <div className="p-5 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
-                          <div className="mb-2">
-                              <span className="text-xs font-bold tracking-wider text-indigo-500 uppercase">{item.category}</span>
-                          </div>
-                          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                              {item.title}
-                          </h3>
-                          <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
-                              {item.description}
-                          </p>
-                      </div>
-                  </div>
-                  </div>
+                      item={item} 
+                      index={index} 
+                      onClick={() => openLightbox(index)} 
+                  />
               ))}
               </div>
           )}
@@ -300,7 +345,7 @@ const Portfolio: React.FC = () => {
                                   src={getDriveDirectLink(items[lightboxIndex].image)} 
                                   alt={items[lightboxIndex].title}
                                   className="max-h-[80vh] max-w-full object-contain"
-                                  onError={(e) => handleImageError(e, items[lightboxIndex].title)}
+                                  onError={(e) => handleLightboxImageError(e, items[lightboxIndex].title)}
                               />
                               {/* Overlay for Missing Video */}
                               {items[lightboxIndex].type === 'video' && (
@@ -344,8 +389,8 @@ const Portfolio: React.FC = () => {
       )}
 
       {/* CTA */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="bg-slate-50 dark:bg-slate-800 rounded-3xl p-12 text-center border border-slate-100 dark:border-slate-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 relative z-10">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-3xl p-12 text-center border border-slate-100 dark:border-slate-700 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300">
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Want to see more?</h3>
             <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-xl mx-auto">
                 We have hundreds of archived projects available upon request.

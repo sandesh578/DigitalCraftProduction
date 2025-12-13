@@ -1,6 +1,0 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="500" height="500" fill="#F8FAFC"/>
-<path d="M250 420L220 390C110 290 40 225 40 145C40 80 90 30 155 30C190 30 225 50 250 80C275 50 310 30 345 30C410 30 460 80 460 145C460 225 390 290 280 390L250 420Z" fill="#EF4444"/>
-<path d="M250 150V300M175 225H325" stroke="white" stroke-width="30" stroke-linecap="round"/>
-<text x="50%" y="470" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="36" fill="#1E293B">LIFE CARE</text>
-</svg>

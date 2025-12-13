@@ -1,8 +1,0 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="500" height="500" fill="#F8FAFC"/>
-<circle cx="250" cy="250" r="180" stroke="#EA580C" stroke-width="15"/>
-<rect x="180" y="100" width="40" height="300" rx="20" fill="#475569"/>
-<path d="M280 100V400" stroke="#475569" stroke-width="20" stroke-linecap="round"/>
-<path d="M280 100L320 150M280 100L240 150" stroke="#475569" stroke-width="20" stroke-linecap="round"/>
-<text x="50%" y="480" text-anchor="middle" font-family="serif" font-weight="bold" font-size="40" fill="#EA580C">KAROBAR</text>
-</svg>

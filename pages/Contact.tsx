@@ -84,13 +84,20 @@ ${formState.message}`
   ];
 
   return (
-    <div className="pt-24 pb-20 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+    <div className="pt-24 pb-20 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300 relative overflow-hidden">
       <SEO 
         title="Contact Us" 
         description="Get in touch with Digital Craft Productions. Visit our office in Sukhedhara, call us, or send an email to start your project."
         keywords="contact dcp, digital marketing agency phone number, sukhedhara kathmandu, quote"
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] animate-blob"></div>
+          <div className="absolute bottom-[20%] left-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           
           {/* Contact Info */}
@@ -104,23 +111,23 @@ ${formState.message}`
             </p>
 
             <div className="space-y-8 mb-12">
-              <div className="flex items-start space-x-5 group hover:transform hover:translate-x-2 transition-transform duration-300">
-                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+              <div className="flex items-start space-x-5 group p-4 rounded-2xl hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-red-500/20 hover:shadow-lg">
+                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors group-hover:scale-110">
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Visit Our Office</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Visit Our Office</h3>
                   <p className="text-slate-600 dark:text-slate-400">Sukhedhara, Kathmandu</p>
                   <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">We'd love to host you for coffee!</p>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-5 group hover:transform hover:translate-x-2 transition-transform duration-300">
-                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-green-600 dark:text-green-500 group-hover:bg-green-600 group-hover:text-white transition-colors">
+              <div className="flex items-start space-x-5 group p-4 rounded-2xl hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-red-500/20 hover:shadow-lg">
+                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-green-600 dark:text-green-500 group-hover:bg-green-600 group-hover:text-white transition-colors group-hover:scale-110">
                   <MessageSquare className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Call or WhatsApp</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">Call or WhatsApp</h3>
                   <p className="text-slate-600 dark:text-slate-400">Fastest way to reach us.</p>
                   <div className="flex flex-col mt-1">
                     <a href="tel:+9779844659531" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 font-bold text-lg inline-flex items-center">
@@ -133,19 +140,19 @@ ${formState.message}`
                 </div>
               </div>
 
-              <div className="flex items-start space-x-5 group hover:transform hover:translate-x-2 transition-transform duration-300">
-                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-blue-600 dark:text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <div className="flex items-start space-x-5 group p-4 rounded-2xl hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-red-500/20 hover:shadow-lg">
+                <div className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl flex items-center justify-center shrink-0 text-blue-600 dark:text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-colors group-hover:scale-110">
                   <Mail className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Email Us</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Email Us</h3>
                   <p className="text-slate-600 dark:text-slate-400">Send us your requirements.</p>
                   <a href="mailto:digitalcraftp@gmail.com" className="text-indigo-600 dark:text-indigo-400 hover:underline font-medium block mt-1">digitalcraftp@gmail.com</a>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 bg-slate-900 text-slate-300 rounded-2xl shadow-lg relative overflow-hidden group hover:shadow-indigo-500/20 transition-all duration-500">
+            <div className="p-6 bg-slate-900 text-slate-300 rounded-2xl shadow-lg relative overflow-hidden group hover:shadow-red-500/30 transition-all duration-500 border border-slate-800 hover:border-red-500/50">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600 rounded-full blur-[50px] opacity-20 group-hover:opacity-30 transition-opacity"></div>
                 <div className="flex items-center space-x-3 mb-4">
                     <Clock className="h-5 w-5 text-indigo-400" />
@@ -165,7 +172,7 @@ ${formState.message}`
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 relative animate-fade-in-up delay-200 transition-colors duration-300 min-h-[600px] flex flex-col justify-center">
+          <div className="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 relative animate-fade-in-up delay-200 transition-all duration-300 min-h-[600px] flex flex-col justify-center hover:shadow-2xl hover:border-red-500/30">
             {isSuccess ? (
               <div className="flex flex-col items-center justify-center text-center animate-fade-in-up">
                 <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-6 ring-8 ring-green-50 dark:ring-green-900/20">
@@ -287,7 +294,7 @@ ${formState.message}`
             <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-12">Frequently Asked Questions</h2>
             <div className="space-y-4">
                 {FAQs.map((faq, index) => (
-                    <div key={index} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    <div key={index} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300 hover:border-red-500/20">
                         <details className="group">
                             <summary className="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                                 <span>{faq.q}</span>
