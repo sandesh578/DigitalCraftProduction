@@ -12,70 +12,74 @@
           extend: {
             colors: {
               slate: {
-                950: '#020617',
+                950: '#020617'
               }
             },
             animation: {
-              'scroll': 'scroll 20s linear infinite',
-              'blob': 'blob 7s infinite',
+              scroll: 'scroll 20s linear infinite',
+              blob: 'blob 7s infinite',
               'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-              'float': 'float 3s ease-in-out infinite',
-              'slide-down': 'slideDown 0.5s ease-out forwards',
+              float: 'float 3s ease-in-out infinite',
+              'slide-down': 'slideDown 0.5s ease-out forwards'
             },
             keyframes: {
               scroll: {
                 '0%': { transform: 'translateX(0)' },
-                '100%': { transform: 'translateX(-50%)' },
+                '100%': { transform: 'translateX(-50%)' }
               },
               blob: {
                 '0%': { transform: 'translate(0px, 0px) scale(1)' },
                 '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
                 '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' }
               },
               float: {
                 '0%': { transform: 'translateY(0px)' },
                 '50%': { transform: 'translateY(-10px)' },
-                '100%': { transform: 'translateY(0px)' },
+                '100%': { transform: 'translateY(0px)' }
               },
               fadeInUp: {
-                'from': { opacity: '0', transform: 'translateY(20px)' },
-                'to': { opacity: '1', transform: 'translateY(0)' },
+                from: { opacity: '0', transform: 'translateY(20px)' },
+                to: { opacity: '1', transform: 'translateY(0)' }
               },
               slideDown: {
-                'from': { transform: 'translateY(-100%)', opacity: '0' },
-                'to': { transform: 'translateY(0)', opacity: '1' },
+                from: { transform: 'translateY(-100%)', opacity: '0' },
+                to: { transform: 'translateY(0)', opacity: '1' }
               }
             }
           }
         }
-      }
+      };
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
         font-family: 'Outfit', sans-serif;
         cursor: none; /* Hide default cursor */
       }
-      
+
       /* Restore cursor for touch devices */
       @media (hover: none) and (pointer: coarse) {
         body {
           cursor: auto;
         }
-        .cursor-dot, .cursor-outline {
+        .cursor-dot,
+        .cursor-outline {
           display: none;
         }
       }
 
       .scrollbar-hide::-webkit-scrollbar {
-          display: none;
+        display: none;
       }
       .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
-      
+
       /* Custom Cursor Styles */
       .cursor-dot {
         width: 8px;
@@ -107,16 +111,23 @@
       body:hover .cursor-outline {
         opacity: 1;
       }
-      
+
       /* Hover State for Links/Buttons (handled via JS classes ideally, but basic hover here) */
-      a:hover ~ .cursor-outline, button:hover ~ .cursor-outline {
+      a:hover ~ .cursor-outline,
+      button:hover ~ .cursor-outline {
         transform: translate(-50%, -50%) scale(1.5);
       }
 
-      .delay-100 { animation-delay: 0.1s; }
-      .delay-200 { animation-delay: 0.2s; }
-      .delay-300 { animation-delay: 0.3s; }
-      
+      .delay-100 {
+        animation-delay: 0.1s;
+      }
+      .delay-200 {
+        animation-delay: 0.2s;
+      }
+      .delay-300 {
+        animation-delay: 0.3s;
+      }
+
       .animation-delay-2000 {
         animation-delay: 2s;
       }
@@ -126,7 +137,12 @@
 
       /* Print Styles for Proposal Page */
       @media print {
-        nav, footer, .cursor-dot, .cursor-outline, button[aria-label="Scroll to top"], .no-print {
+        nav,
+        footer,
+        .cursor-dot,
+        .cursor-outline,
+        button[aria-label='Scroll to top'],
+        .no-print {
           display: none !important;
         }
         body {
@@ -139,29 +155,20 @@
         }
         /* Ensure dark mode text is legible on print */
         .dark {
-           background-color: white !important;
-           color: black !important;
+          background-color: white !important;
+          color: black !important;
         }
         /* Hide floating chat widget */
-        div[class*="fixed bottom-6"] {
-           display: none !important;
+        div[class*='fixed bottom-6'] {
+          display: none !important;
         }
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.10.1"
-  }
-}
-</script>
-</head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-300">
+  </head>
+  <body
+    class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-300"
+  >
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
