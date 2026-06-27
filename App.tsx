@@ -10,6 +10,7 @@ import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
 import Proposal from './pages/Proposal';
+import DollarServices from './pages/DollarServices';
 import { ContentProvider } from './context/ContentContext';
 
 // Theme Context
@@ -127,6 +128,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/dollar-services" element={<DollarServices />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/proposal" element={<Proposal />} />
                 <Route path="/contact" element={<Contact />} />

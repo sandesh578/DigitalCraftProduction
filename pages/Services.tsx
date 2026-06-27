@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SERVICES } from '../constants';
 import { NavLink } from 'react-router-dom';
-import { Send, ChevronDown, X, Check, Star } from 'lucide-react';
+import { Send, ChevronDown, ChevronRight, X, Check, Star } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const Services: React.FC = () => {
@@ -106,12 +106,21 @@ ${formData.message}`
                 
                 {!isExpanded ? (
                   <div className="flex gap-3 mt-auto">
-                    <button 
-                      onClick={() => handleToggle(service.id)}
-                      className="flex-1 py-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors flex items-center justify-center group border border-indigo-100 dark:border-indigo-800/50 hover:border-red-500/30"
-                    >
-                      Get Quote <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
-                    </button>
+                    {service.link ? (
+                      <NavLink 
+                        to={service.link}
+                        className="flex-1 py-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors flex items-center justify-center group border border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-500/30"
+                      >
+                        View Details <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </NavLink>
+                    ) : (
+                      <button 
+                        onClick={() => handleToggle(service.id)}
+                        className="flex-1 py-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors flex items-center justify-center group border border-indigo-100 dark:border-indigo-800/50 hover:border-red-500/30"
+                      >
+                        Get Quote <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
+                      </button>
+                    )}
                     <NavLink 
                       to="/contact" 
                       className="px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-300 transition-colors flex items-center justify-center bg-transparent"

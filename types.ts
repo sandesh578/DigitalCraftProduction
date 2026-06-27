@@ -7,6 +7,7 @@ export interface Service {
   icon: LucideIcon;
   color: string;
   features: string[]; // Added specific features list
+  link?: string;
 }
 
 export interface Testimonial {
