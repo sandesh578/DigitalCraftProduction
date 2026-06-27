@@ -73,7 +73,7 @@ export const fetchDriveFiles = async (folderId: string, apiKey: string): Promise
         title: file.name.replace(/\.[^/.]+$/, ""), // Remove extension
         category: isVideo ? 'Video Production' : 'Photography', // Simplified category
         // If it's a video, use thumbnail as cover, else use image itself
-        image: highResImage || '/jpeg/logo.jpeg', 
+        image: highResImage || '/images/logo.jpeg',
         description: file.description || (isVideo ? 'Cinematic Video Production' : 'Professional Photography'),
         type: isVideo ? 'video' : 'image',
         videoUrl: isVideo ? embedUrl : undefined

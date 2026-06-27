@@ -31,7 +31,7 @@ const PortfolioCard: React.FC<{
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
     if (target.src.includes('ui-avatars.com')) {
-       target.src = '/jpeg/logo.jpeg';
+       target.src = '/images/logo.jpeg';
        target.onerror = null; 
     } else {
        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.title)}&background=random&size=400&font-size=0.33`;
@@ -156,7 +156,7 @@ const Portfolio: React.FC = () => {
   const handleLightboxImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, title: string) => {
     const target = e.currentTarget;
     if (target.src.includes('ui-avatars.com')) {
-       target.src = '/jpeg/logo.jpeg'; 
+       target.src = '/images/logo.jpeg';
        target.onerror = null; 
     } else {
        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=random&size=400&font-size=0.33`;

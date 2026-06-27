@@ -25,7 +25,42 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [config, setConfig] = useState<SiteConfig>(() => {
     try {
       const saved = localStorage.getItem('dcp_site_config');
-      return saved ? JSON.parse(saved) : DEFAULT_CONFIG;
+      if (!saved) return DEFAULT_CONFIG;
+
+      const parsed = JSON.parse(saved) as SiteConfig;
+      const merged: SiteConfig = {
+        ...DEFAULT_CONFIG,
+        ...parsed,
+        agency: {
+          ...DEFAULT_CONFIG.agency,
+          ...parsed.agency,
+        },
+        contact: {
+          ...DEFAULT_CONFIG.contact,
+          ...parsed.contact,
+        },
+        hero: {
+          ...DEFAULT_CONFIG.hero,
+          ...parsed.hero,
+          stats: {
+            ...DEFAULT_CONFIG.hero.stats,
+            ...parsed.hero?.stats,
+          },
+        },
+        drive: {
+          ...DEFAULT_CONFIG.drive,
+          ...parsed.drive,
+        },
+      };
+
+      if (
+        !merged.agency.logo ||
+        merged.agency.logo === 'https://raw.githubusercontent.com/sandesh578/DigitalCraftProduction/main/public/images/logo.jpeg'
+      ) {
+        merged.agency.logo = DEFAULT_CONFIG.agency.logo;
+      }
+
+      return merged;
     } catch (e) {
       console.error("Failed to load config from storage", e);
       return DEFAULT_CONFIG;
